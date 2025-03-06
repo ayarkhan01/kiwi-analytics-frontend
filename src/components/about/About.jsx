@@ -9,11 +9,11 @@ import "./about.css"
 const teamMembers = [
     {name: "Max",
      image: max,
-     description: "Backend Developer with skills in css java, javascript, and many other thingsBackend Developer with skills in css java, javascript, and many other things" },
+     description: "Frontend Developer with skills in css, python, javascript, and mostly no skills" },
     
     {name: "Bob",
      image: member2,
-     description: "Frontend Specialist" },
+     description: "Backend Specialist" },
     
     {name: "Charlie",
      image: member3,
