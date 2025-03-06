@@ -1,13 +1,11 @@
 import React from "react";
 
-const Author = () => {
-    
+export function Author({ name, image, description }) {
     return (
-        <div>
-            <h2>Hi, my name is Banana</h2>
-            <p>I lived my whole life in pain and suffering.</p>
-        </div>
+      <div className="team-card">
+        <img src={image} alt={name} className="team-photo" />
+        <h3 className="team-name">{name}</h3>
+        <p className="team-description">{description}</p>
+      </div>
     );
-};
-
-export default Author;
+  }
