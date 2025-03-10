@@ -23,7 +23,6 @@ body {
 
 
 .logout-button {
-    border-radius: 10px;
     border: none;
     color: white;
     cursor: pointer;
@@ -37,7 +36,11 @@ body {
     display: flex; /* Or display: inline-flex; if needed */
     justify-content: center;
     align-items: center;
+    transition: transform 200ms ease-in-out;
+}
 
+.logout-button:hover {
+  transform: scale(1.1);
 }
 
 
@@ -56,18 +59,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 2vw;
-    border-radius: 5vw;
+    padding: 1vw;
+    border-radius: 1vw;
     box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: transform 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
     height: 100%;
   }
 
   .team-card:hover {
     transform: scale(1.05);
     transition: all 300ms ease-out;
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.5);
   }
   
   .team-photo {
@@ -77,6 +80,7 @@ body {
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 1vw;
+    margin-top: 1vh;
     transition: transform 300ms ease-in-out;
   }
 
@@ -87,19 +91,24 @@ body {
   
   .team-name {
     font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 0vw;
+    font-weight: 800;
+    margin-bottom: 0.5vw;
     min-height: 2vw;
+  }
+
+  .team-position {
+    font-size: 18px;
+    font-weight: 300px;
+    margin: 0px;
+    margin-bottom: 2vh;
+    color:rgba(0, 0, 0, 0.8);
   }
   
   .team-description {
-    font-size: 16px;;
+    font-size: 16px;
     color: #555;
     flex-grow: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 3vw;
+    min-height: 0vw;
   }
   

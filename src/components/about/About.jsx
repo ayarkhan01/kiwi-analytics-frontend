@@ -9,18 +9,22 @@ import "./about.css"
 const teamMembers = [
     {name: "Max",
      image: max,
+     position: "Janitor",
      description: "Frontend Developer with skills in css, python, javascript, and mostly no skills" },
     
     {name: "Bob",
      image: member2,
+     position: "Developer",
      description: "Backend Specialist" },
     
     {name: "Charlie",
      image: member3,
+     position: "Developer",
      description: "Machine Learning Expert" },
     
     {name: "David",
      image: member4,
+     position: "Developer",
      description: "Cloud Architect" },
 ];
 
@@ -46,6 +50,7 @@ const About = ({setUserInParentComponent}) => {
                 name={member.name}
                 image={member.image}
                 description={member.description}
+                position={member.position}
               />
             ))}
           </div>
