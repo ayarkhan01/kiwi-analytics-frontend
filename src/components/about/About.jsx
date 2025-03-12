@@ -1,9 +1,9 @@
 import React from 'react'
 import { Author } from "./Author";
-import max from "./assets/max.jpg";
-import member2 from "./assets/member2.jpg";
-import member3 from "./assets/member3.jpg";
-import member4 from "./assets/member4.jpg";
+import max from "../../assets/max.jpg";
+import member2 from "../../assets/member2.jpg";
+import member3 from "../../assets/member3.jpg";
+import member4 from "../../assets/member4.jpg";
 import "./about.css"
 
 const teamMembers = [
@@ -38,11 +38,8 @@ const About = ({setUserInParentComponent}) => {
 
     return (
         <>
-          <div className="header">
-            <h1 className="title">Meet the Team</h1>
-            <button className="logout-button" onClick={handleLogout}>Logout</button>  
-          </div>
-
+        
+          <h1 className="title">Meet the Team</h1>
           <div className="team-grid">
             {teamMembers.map((member, index) => (
               <Author

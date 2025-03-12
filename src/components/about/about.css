@@ -1,48 +1,8 @@
-
-body {
-  margin: 20px;
-}
-
-.header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    margin-bottom: 100px;
-    position: relative;
-    
-}
-
 .title {
-  position: absolute;
-  /* new */
-  left: 50%;
-  transform: translateX(-50%);
   font-weight: 1000;
+  text-align: center;
+  margin-bottom: 3rem;
 }
-
-
-.logout-button {
-    border: none;
-    color: white;
-    cursor: pointer;
-    background-color: #281ee7;
-    font-size: 16px;
-    font-weight: 700;
-    width: 100px;
-    margin-left: auto;
-    height: 40px;
-    text-align: center;
-    display: flex; /* Or display: inline-flex; if needed */
-    justify-content: center;
-    align-items: center;
-    transition: transform 200ms ease-in-out;
-}
-
-.logout-button:hover {
-  transform: scale(1.1);
-}
-
 
 .team-grid {
     display: grid;
