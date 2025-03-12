@@ -6,11 +6,12 @@ import member3 from "../../assets/member3.jpg";
 import member4 from "../../assets/member4.jpg";
 import "./about.css"
 
+// Import Each Persons Image Above. Images stored in assets folder. Descriptions and Positions below. 
 const teamMembers = [
     {name: "Max",
      image: max,
-     position: "Janitor",
-     description: "Frontend Developer with skills in css, python, javascript, and mostly no skills" },
+     position: "Junior Developer",
+     description: "Frontend Developer with skills in css, python, javascript" },
     
     {name: "Bob",
      image: member2,
