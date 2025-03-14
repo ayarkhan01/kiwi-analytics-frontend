@@ -3,7 +3,7 @@ import { Author } from "./Author";
 import max from "../../assets/max.jpg";
 import ahmed from "../../assets/ahmed.jpeg";
 import Jose from "../../assets/Jose.jpg";
-import Jean from "../../assets/member4.jpg";
+import Jean from "../../assets/Jean.jpg";
 import "./about.css";
 
 // Import Each Persons Image Above. Images stored in assets folder. Descriptions and Positions below.
