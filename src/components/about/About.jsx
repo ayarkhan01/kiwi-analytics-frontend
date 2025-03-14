@@ -2,8 +2,8 @@ import React from "react";
 import { Author } from "./Author";
 import max from "../../assets/max.jpg";
 import ahmed from "../../assets/ahmed.jpeg";
-import member3 from "../../assets/Jose.jpg";
-import member4 from "../../assets/member4.jpg";
+import Jose from "../../assets/Jose.jpg";
+import Jean from "../../assets/member4.jpg";
 import "./about.css";
 
 // Import Each Persons Image Above. Images stored in assets folder. Descriptions and Positions below.
@@ -24,16 +24,16 @@ const teamMembers = [
 
   {
     name: "Jose",
-    image: member3,
+    image: Jose,
     position: "Finance Analyst",
     description: "Financial especialist with experience in data analysis",
   },
 
   {
-    name: "David",
-    image: member4,
-    position: "Developer",
-    description: "Cloud Architect",
+    name: "Jean",
+    image: Jean,
+    position: "Intern",
+    description: "Hard working MS FinTech student with a passion for coding",
   },
 ];
 
