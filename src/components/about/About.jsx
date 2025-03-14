@@ -2,7 +2,7 @@ import React from "react";
 import { Author } from "./Author";
 import max from "../../assets/max.jpg";
 import ahmed from "../../assets/ahmed.jpeg";
-import member3 from "../../assets/member3.jpg";
+import member3 from "../../assets/Jose.jpg";
 import member4 from "../../assets/member4.jpg";
 import "./about.css";
 
@@ -23,10 +23,10 @@ const teamMembers = [
   },
 
   {
-    name: "Charlie",
+    name: "Jose",
     image: member3,
-    position: "Developer",
-    description: "Machine Learning Expert",
+    position: "Finance Analyst",
+    description: "Financial especialist with experience in data analysis",
   },
 
   {
