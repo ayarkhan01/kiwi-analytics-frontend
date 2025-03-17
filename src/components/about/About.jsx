@@ -61,7 +61,6 @@ const About = ({ setUserInParentComponent }) => {
           />
         ))}
       </div>
-      <button onClick={handleLogout}>Logout</button>
     </>
   );
 };

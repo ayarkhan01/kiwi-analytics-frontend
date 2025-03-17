@@ -1,10 +1,18 @@
+import { Link, useNavigate } from "react-router-dom";
 import '../NavBar/navbar.css';
 import logo from "../../assets/app logo.jpg";
 
-const Navbar =({handleLogout}) => {
-    return (<>
+const Navbar = ({ handleLogout }) => {
+    const navigate = useNavigate();
+
+    const handleLogoutClick = () => {
+        handleLogout(); // Logs out user
+        navigate("/login"); // Redirects to login page
+    };
+
+    return (
         <nav className="navbar">
-            <div className="navabar-left">
+            <div className="navbar-left">
                 <img src={logo} alt="app logo" className="navbar-logo" />
             </div>
             <div className="navbar-center">
@@ -13,9 +21,10 @@ const Navbar =({handleLogout}) => {
                 <Link to="/about" className="navbar-link">About</Link>
             </div>
             <div className="navbar-right">
-                <button onClick={() => handleLogout} className="navbar-button">Logout</button>
+                <button onClick={handleLogoutClick} className="navbar-button">Logout</button>
             </div>
-        </nav></>);
+        </nav>
+    );
 }
 
 export default Navbar;
