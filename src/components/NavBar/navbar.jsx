@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import '../NavBar/navbar.css';
-import logo from "../../assets/app logo.jpg";
+import logo from "../../assets/app logo.png";
 
 const Navbar = ({ handleLogout }) => {
     const navigate = useNavigate();

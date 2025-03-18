@@ -2,8 +2,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #1a1a2e;
+    padding: 0px 20px;
+    height: 100px;
+    background-color: #56d371;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -14,14 +15,14 @@
 }
 
 .navbar-logo {
-    height: 50px;
-    width: auto;
+    height: auto;
+    width: 150px;
     border-radius: 5px;
 }
 
 .navbar-center {
     display: flex;
-    gap: 20px;
+    gap: 70px;
 }
 
 .navbar-link {
@@ -32,7 +33,7 @@
 }
 
 .navbar-link:hover {
-    color: #00aaff;
+    color: #08470e;
 }
 
 .navbar-right {
