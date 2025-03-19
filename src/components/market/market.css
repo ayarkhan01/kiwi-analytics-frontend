@@ -1,0 +1,44 @@
+.market-container {
+    padding: 20px;
+    text-align: center; /* Centers the entire content */
+}
+
+.market-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.market-table th,
+.market-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.market-table th {
+    background-color: #f4f4f4;
+}
+
+.market-actions {
+    display: flex;
+    justify-content: center; /* Centers buttons */
+    gap: 10px; /* Space between buttons */
+    margin-top: 15px; /* Adds spacing from the table */
+}
+
+.market-actions button {
+    padding: 10px 16px; /* Keeps previous button height */
+    font-size: 14px; /* Keeps text readable */
+    width: 200px; /* Reduces button width */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; /* Slightly rounded edges */
+    text-align: center;
+}
+
+.market-actions button:hover {
+    background-color: #0056b3;
+}
