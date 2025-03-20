@@ -37,12 +37,14 @@ const teamMembers = [
   },
 ];
 
+
 const About = ({ setUserInParentComponent }) => {
-  const handleLogout = () => {
-    console.log("hello");
-    setUserInParentComponent({
-      isLoggedIn: false, // Set logged out state
-    });
+  const handleLogout = (event) => {
+    event.preventDefault();
+    setUserInParentComponent(prevState => ({
+      ...prevState,
+      isLoggedIn: false // Set logged out state
+    }));
   };
 
   return (

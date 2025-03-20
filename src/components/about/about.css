@@ -9,8 +9,9 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 2vw;
     justify-content: center;
-    align-items: stretch;
-    width: 100%;
+    align-items: center;
+    width: 95%;
+    margin: 0 auto;
     padding: 0vw;
   }
   
