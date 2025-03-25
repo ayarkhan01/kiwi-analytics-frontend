@@ -4,6 +4,7 @@ import max from "../../assets/max.jpg";
 import ahmed from "../../assets/ahmed.jpeg";
 import Jose from "../../assets/Jose.jpg";
 import Jean from "../../assets/Jean.jpg";
+import Khuong from "../../assets/khuong.jpg";
 import "./about.css";
 
 // Import Each Persons Image Above. Images stored in assets folder. Descriptions and Positions below.
@@ -34,6 +35,13 @@ const teamMembers = [
     image: Jean,
     position: "Intern",
     description: "Hard working MS FinTech student with a passion for coding",
+  },
+
+  {
+    name: "Khuong",
+    image: Khuong,
+    position: "Data Accounting Analyst",
+    description: "Accounting and report analysis",
   },
 ];
 
