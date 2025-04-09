@@ -1,30 +1,57 @@
-import { Link, useNavigate } from "react-router-dom";
-import '../NavBar/navbar.css';
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import "../NavBar/navbar.css";
 import logo from "../../assets/app logo.png";
 
 const Navbar = ({ handleLogout }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const handleLogoutClick = () => {
-        handleLogout(); // Logs out user
-        navigate("/login"); // Redirects to login page
-    };
+  // Function to check if link is active
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
 
-    return (
-        <nav className="navbar">
-            <div className="navbar-left">
-                <img src={logo} alt="app logo" className="navbar-logo" />
-            </div>
-            <div className="navbar-center">
-                <Link to="/portfolio" className="navbar-link">Portfolio</Link>
-                <Link to="/market" className="navbar-link">Market</Link>
-                <Link to="/about" className="navbar-link">About</Link>
-            </div>
-            <div className="navbar-right">
-                <button onClick={handleLogoutClick} className="navbar-button">Logout</button>
-            </div>
-        </nav>
-    );
-}
+  const handleLogoutClick = () => {
+    handleLogout(); // Logs out user
+    navigate("/login"); // Redirects to login page
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-left">
+        <Link to="/portfolio">
+          <img src={logo} alt="Kiwi Analytics logo" className="navbar-logo" />
+        </Link>
+      </div>
+      <div className="navbar-center">
+        <Link
+          to="/portfolio"
+          className={`navbar-link ${
+            isActive("/portfolio") ? "active-link" : ""
+          }`}
+        >
+          Portfolio
+        </Link>
+        <Link
+          to="/market"
+          className={`navbar-link ${isActive("/market") ? "active-link" : ""}`}
+        >
+          Market
+        </Link>
+        <Link
+          to="/about"
+          className={`navbar-link ${isActive("/about") ? "active-link" : ""}`}
+        >
+          About
+        </Link>
+      </div>
+      <div className="navbar-right">
+        <button onClick={handleLogoutClick} className="navbar-button">
+          Logout
+        </button>
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;

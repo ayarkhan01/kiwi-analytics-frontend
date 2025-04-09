@@ -1,71 +1,153 @@
+.about-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .title {
-  font-weight: 1000;
+  font-size: 2.25rem;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 3rem;
+  color: var(--text-dark);
 }
 
 .team-grid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-    margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.team-card {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(0.5rem);
+  padding: 1.5rem;
+  width: 300px; /* Fixed width */
+  height: 360px; /* Fixed height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 300ms ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+.team-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: block;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  transition: all 300ms ease;
+}
+
+.team-card:hover .team-photo {
+  transform: scale(1.05);
+  border-color: #001f3f;
+}
+
+.team-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-dark);
+  width: 100%; /* Full width */
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis for overflow */
+}
+
+.team-position {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  margin: 0 0 0.5rem;
+  width: 100%; /* Full width */
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis for overflow */
+}
+
+.team-description {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  padding: 0 0.5rem;
+  /* Fixed height for description to ensure consistent cards */
+  height: 60px;
+  overflow: auto;
+  margin-top: auto; /* Push to bottom if needed */
+}
+
+/* About mission section */
+.about-mission {
+  margin-top: 3rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.about-mission h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+}
+
+.about-mission p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Background overlay for glass effect */
+.about-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url("/src/assets/wall-street.jpg") no-repeat center center/cover;
+  background-size: cover;
+  opacity: 0.05;
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 1rem;
   }
-  
+
+  .team-grid {
+    gap: 1.5rem;
+  }
+
   .team-card {
-    background: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1vw;
-    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: all 300ms ease-in-out;
-    height: 23rem;
-    width: 23rem;
-  }
-
-  .team-card:hover {
-    transform: scale(1.05);
-    transition: all 300ms ease-out;
-    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.5);
-  }
-  
-  .team-photo {
     width: 100%;
-    max-width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 0.5vw;
-    margin-top: 1vh;
-    transition: transform 300ms ease-in-out;
+    max-width: 320px;
+    height: auto;
+    min-height: 360px;
   }
 
-  .team-photo:hover {
-    transform: scale(1.1);
-    transition: all 300ms ease-out;
-  }
-  
-  .team-name {
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 0.5vw;
+  .team-photo {
+    width: 120px;
+    height: 120px;
   }
 
-  .team-position {
-    font-size: 18px;
-    margin: 0px;
-    margin-bottom: 0.5vh;
-    color:rgba(0, 0, 0, 0.8);
+  .about-mission {
+    padding: 1.5rem;
   }
-  
-  .team-description {
-    font-size: 16px;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: #555;
-    min-height: 0vw;
-  }
-  
+}
