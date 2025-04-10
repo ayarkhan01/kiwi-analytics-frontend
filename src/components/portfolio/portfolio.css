@@ -1,0 +1,152 @@
+/* Import the main theme */
+.portfolio-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.portfolio-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-dark);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+  color: var(--text-dark);
+}
+
+/* Portfolio summary card */
+.portfolio-summary {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.summary-item {
+  text-align: center;
+}
+
+.summary-item h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.summary-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.positive {
+  color: #28a745;
+}
+
+.negative {
+  color: #dc3545;
+}
+
+/* Holdings table */
+.portfolio-table-container {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+.portfolio-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.portfolio-table th {
+  background-color: rgba(0, 31, 63, 0.1);
+  color: var(--text-dark);
+  font-weight: 600;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.portfolio-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(217, 217, 217, 0.5);
+}
+
+.portfolio-table tr:last-child td {
+  border-bottom: none;
+}
+
+.portfolio-table tr:hover td {
+  background-color: rgba(86, 211, 113, 0.05);
+}
+
+/* Watchlist cards */
+.watchlist-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.watchlist-card {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stock-ticker {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.stock-price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.stock-change {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.watchlist-btn {
+  width: 100%;
+}
+
+/* Background overlay for glass effect */
+.portfolio-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url("/src/assets/wall-street.jpg") no-repeat center center/cover;
+  background-size: cover;
+  opacity: 0.05;
+}
+
+@media (max-width: 768px) {
+  .portfolio-container {
+    padding: 1rem;
+  }
+
+  .portfolio-summary {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .watchlist-container {
+    grid-template-columns: 1fr;
+  }
+}

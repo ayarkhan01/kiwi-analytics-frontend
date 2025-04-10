@@ -1,19 +1,25 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './components/login/Login.jsx';
-import About from './components/about/About.jsx';
-import Portfolio from './components/portfolio/Portfolio.jsx';
-import Market from './components/market/Market.jsx';
-import Navbar from './components/NavBar/navbar.jsx';
+import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Login from "./components/login/Login.jsx";
+import About from "./components/about/About.jsx";
+import Portfolio from "./components/portfolio/Portfolio.jsx";
+import Market from "./components/market/Market.jsx";
+import Navbar from "./components/NavBar/navbar.jsx";
+import "./index.css";
 
 function App() {
   const [user, setUser] = useState({
-    user: '',
-    isLoggedIn: false
+    user: "",
+    isLoggedIn: false,
   });
 
   const handleLogout = () => {
-    setUser({ user: '', isLoggedIn: false });
+    setUser({ user: "", isLoggedIn: false });
   };
 
   return (
@@ -22,11 +28,23 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={user.isLoggedIn ? <Navigate to="/portfolio" /> : <Navigate to="/login" />}
+          element={
+            user.isLoggedIn ? (
+              <Navigate to="/portfolio" />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/login"
-          element={!user.isLoggedIn ? <Login setUserInParentComponent={setUser} /> : <Navigate to="/portfolio" />}
+          element={
+            !user.isLoggedIn ? (
+              <Login setUserInParentComponent={setUser} />
+            ) : (
+              <Navigate to="/portfolio" />
+            )
+          }
         />
         <Route
           path="/portfolio"
