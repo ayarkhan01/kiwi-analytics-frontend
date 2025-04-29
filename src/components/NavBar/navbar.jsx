@@ -39,6 +39,12 @@ const Navbar = ({ handleLogout }) => {
           Market
         </Link>
         <Link
+          to="/transactions"
+          className={`navbar-link ${isActive("/transactions") ? "active-link" : ""}`}
+        >
+          Transaction History
+        </Link>
+        <Link
           to="/about"
           className={`navbar-link ${isActive("/about") ? "active-link" : ""}`}
         >

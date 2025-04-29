@@ -1,0 +1,174 @@
+/* Main container styles */
+.transactions-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin: 20px;
+    padding: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Header styles */
+  .transactions-header h1 {
+    color: #2196f3;
+    font-size: 24px;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  
+  .transactions-subheader {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+  }
+  
+  .transactions-subheader h2 {
+    color: #666;
+    font-size: 16px;
+    font-weight: normal;
+  }
+  
+  /* Controls section */
+  .transactions-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-box input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 250px;
+    font-size: 14px;
+  }
+  
+  /* Removed table options */
+  
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown-toggle {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .caret {
+    font-size: 10px;
+  }
+  
+  .results-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  /* Table styles */
+  .transactions-table-container {
+    overflow-x: auto;
+    margin-bottom: 30px;
+  }
+  
+  .transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .transactions-table th {
+    background-color: #f8f9fa;
+    color: #555;
+    font-weight: 600;
+    text-align: left;
+    padding: 15px;
+    font-size: 14px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  .transactions-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .transactions-table tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .buy-type {
+    color: #4caf50;
+    font-weight: 500;
+  }
+  
+  .sell-type {
+    color: #f44336;
+    font-weight: 500;
+  }
+  
+  /* Removed action buttons */
+  
+  /* Pagination styles */
+  .pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .showing-info {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .page-btn {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .page-num-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: #555;
+    cursor: pointer;
+  }
+  
+  .page-num-btn.active {
+    background-color: #2196f3;
+    color: white;
+    border-color: #2196f3;
+  }
+  
+  /* Removed related actions section */

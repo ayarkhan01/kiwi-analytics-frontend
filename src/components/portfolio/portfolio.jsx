@@ -132,28 +132,6 @@ const Portfolio = () => {
           </tbody>
         </table>
       </div>
-
-      <h2 className="section-title">Watchlist</h2>
-      <div className="watchlist-container">
-        {portfolioData.watchlist.map((stock) => (
-          <div className="watchlist-card glass-card" key={stock.ticker}>
-            <h3 className="stock-ticker">{stock.ticker}</h3>
-            <p className="stock-price">${stock.price.toFixed(2)}</p>
-            <p
-              className={`stock-change ${
-                stock.change >= 0 ? "positive" : "negative"
-              }`}
-            >
-              {stock.change >= 0 ? "+" : ""}
-              {stock.change.toFixed(2)} ({stock.change >= 0 ? "+" : ""}
-              {stock.changePercent.toFixed(2)}%)
-            </p>
-            <button className="btn btn-primary watchlist-btn">
-              Add to Portfolio
-            </button>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
