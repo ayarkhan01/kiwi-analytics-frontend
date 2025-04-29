@@ -1,117 +1,61 @@
-/* Import the main theme */
-.portfolio-container {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.portfolio-title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--text-dark);
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 2rem 0 1rem;
-  color: var(--text-dark);
-}
-
-/* Portfolio summary card */
-.portfolio-summary {
+/* portfolio.css */
+.dashboard-container {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 2rem;
-  margin-bottom: 2rem;
+  min-height: 100vh; /* Ensure the container takes at least the full viewport height */
 }
 
-.summary-item {
-  text-align: center;
+.sidebar {
+  background-color: #f7f7f7; /* Light background for the sidebar */
+  padding: 20px;
+  width: 250px; /* Adjust width as needed */
+  border-right: 1px solid #eee;
 }
 
-.summary-item h3 {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-bottom: 0.5rem;
+.sidebar h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
 }
 
-.summary-value {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
+.portfolio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Spacing between portfolio items */
 }
 
-.positive {
-  color: #28a745;
-}
-
-.negative {
-  color: #dc3545;
-}
-
-/* Holdings table */
-.portfolio-table-container {
-  overflow-x: auto;
-  margin-bottom: 2rem;
-}
-
-.portfolio-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.portfolio-table th {
-  background-color: rgba(0, 31, 63, 0.1);
-  color: var(--text-dark);
-  font-weight: 600;
-  padding: 1rem;
+.portfolio-item {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  border-radius: 6px; /* Slightly rounded corners */
   text-align: left;
-  border-bottom: 2px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 16px;
 }
 
-.portfolio-table td {
-  padding: 1rem;
-  border-bottom: 1px solid rgba(217, 217, 217, 0.5);
+.portfolio-item:hover {
+  background-color: #eee;
 }
 
-.portfolio-table tr:last-child td {
-  border-bottom: none;
+.portfolio-item.active {
+  background-color: #309739; /* Green active color, like in your example */
+  color: white;
+  border-color: #309739;
 }
 
-.portfolio-table tr:hover td {
-  background-color: rgba(86, 211, 113, 0.05);
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
 }
 
-/* Background overlay for glass effect */
-.portfolio-container::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: url("/src/assets/wall-street.jpg") no-repeat center center/cover;
-  background-size: cover;
-  opacity: 0.05;
+.main-content h1 {
+  margin-top: 0;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-  .portfolio-container {
-    padding: 1rem;
-  }
-
-  .portfolio-summary {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .watchlist-container {
-    grid-template-columns: 1fr;
-  }
+.main-content p {
+  color: #666;
 }
