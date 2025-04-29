@@ -7,9 +7,10 @@ import {
 } from "react-router-dom";
 import Login from "./components/login/Login.jsx";
 import About from "./components/about/About.jsx";
-import Portfolio from "./components/portfolio/Portfolio.jsx";
+import Portfolio from "./components/portfolio/portfolio.jsx";
 import Market from "./components/market/Market.jsx";
 import Navbar from "./components/NavBar/navbar.jsx";
+import Transactions from "./components/transactions/Transactions.jsx";
 import "./index.css";
 
 function App() {
@@ -53,6 +54,10 @@ function App() {
         <Route
           path="/market"
           element={user.isLoggedIn ? <Market /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/transactions"
+          element={user.isLoggedIn ? <Transactions /> : <Navigate to="/login" />}
         />
         <Route
           path="/about"
