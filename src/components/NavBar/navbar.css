@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2rem;
   height: 80px;
   background: linear-gradient(90deg, #4ba3c3, #001f3f);
   backdrop-filter: blur(10px);
@@ -17,19 +16,18 @@
 .navbar-left {
   display: flex;
   align-items: center;
-  width: 200px; /* Fixed width to match navbar-right */
+  width: 200px;
+  height: 100%;
 }
 
+/* Logo styling - enhanced size while keeping within navbar */
 .navbar-logo {
   height: auto;
-  width: 150px;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+  width: 200px; /* Increased width */
+  max-height: 70px; /* Increased max height */
+  padding: 5px 5px 5px 20px;
   vertical-align: middle;
-}
-
-.navbar-logo:hover {
-  transform: scale(1.05);
+  object-fit: contain;
 }
 
 .navbar-center {
@@ -74,7 +72,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 200px; /* Fixed width to match navbar-left */
+  padding-right: 20px;
+  width: 200px;
 }
 
 .navbar-button {
@@ -126,7 +125,8 @@
   }
 
   .navbar-logo {
-    width: 120px;
+    width: 150px;
+    max-height: 50px;
   }
 
   .navbar-link {
@@ -145,6 +145,7 @@
   }
 
   .navbar-logo {
-    width: 100px;
+    width: 120px;
+    max-height: 40px;
   }
 }
