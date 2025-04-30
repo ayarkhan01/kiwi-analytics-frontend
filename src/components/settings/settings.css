@@ -1,0 +1,85 @@
+
+.settings-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.settings-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    min-width: 50%;
+    border-radius: 0.9375rem;
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(0.5rem);
+    overflow: hidden;
+    margin: 20px;
+}
+
+.settings-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    align-self: center;
+}
+
+.section-title {
+    font-size: 1.5rem;
+
+    margin-bottom: 10px;
+}
+
+.user-section,
+.portfolios-section {
+    margin-bottom: 30px;
+}
+
+.user-details p {
+    margin: 5px 0;
+}
+
+.delete-button {
+    background-color: rgb(205, 0, 0);
+    color: white;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+    margin-top: 5px;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+
+.delete-button.small {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.portfolio-list {
+    list-style: none;
+    padding: 0;
+}
+
+.portfolio-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 500px;
+}
+
+.no-user-text,
+.no-portfolios-text {
+    font-style: italic;
+    color: gray;
+}
