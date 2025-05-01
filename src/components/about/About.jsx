@@ -42,13 +42,6 @@ const teamMembers = [
 ];
 
 const About = ({ setUserInParentComponent }) => {
-  const handleLogout = (event) => {
-    event.preventDefault();
-    setUserInParentComponent((prevState) => ({
-      ...prevState,
-      isLoggedIn: false, // Set logged out state
-    }));
-  };
 
   return (
     <div className="about-container">
