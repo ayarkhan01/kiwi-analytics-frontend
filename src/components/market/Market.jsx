@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import "./Market.css";
 import { portfolioData } from "../portfolio/portfolio_data";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Sample market data - would come from your backend API eventually
@@ -78,94 +78,133 @@ const marketStocksData = [{'ticker': 'AAPL',
   'marketCap': '138.44B',
   'sector': 'Healthcare'}];
 
-  const Market = () => {
-    // State management
-    const [searchTerm, setSearchTerm] = useState("");
-    const [selectedSector, setSelectedSector] = useState("All");
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" });
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [selectedStock, setSelectedStock] = useState(null);
-    const [quantity, setQuantity] = useState(1);
-    const [selectedPortfolio, setSelectedPortfolio] = useState(portfolioData[0].portfolio_id);
-    
-    // Get unique sectors for filter
-    const sectors = ["All", ...new Set(marketStocksData.map(stock => stock.sector))];
-    
-    // Filter stocks based on search and sector using useMemo
-    const filteredStocks = useMemo(() => {
-      let result = [...marketStocksData];
-      
-      // Apply search filter
-      if (searchTerm) {
-        result = result.filter(
-          stock => 
-            stock.ticker.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            stock.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-      
-      // Apply sector filter
-      if (selectedSector !== "All") {
-        result = result.filter(
-          stock => stock.sector === selectedSector
-        );
-      }
-      
-      // Apply sorting
-      if (sortConfig.key) {
-        result.sort((a, b) => {
-          if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === "ascending" ? -1 : 1;
-          }
-          if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === "ascending" ? 1 : -1;
-          }
-          return 0;
-        });
-      }
-      
-      return result;
-    }, [searchTerm, selectedSector, sortConfig]);
+// Precompute sectors for better performance
+const sectors = ["All", ...new Set(marketStocksData.map(stock => stock.sector))];
+
+const Market = () => {
+  // State management
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSector, setSelectedSector] = useState("All");
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" });
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedStock, setSelectedStock] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedPortfolio, setSelectedPortfolio] = useState(portfolioData[0].portfolio_id);
   
-  
-  // Handle sorting
-  const requestSort = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
+  // Filter stocks based on search and sector using useMemo
+  const filteredStocks = useMemo(() => {
+    let result = [...marketStocksData];
+    
+    // Apply search filter
+    if (searchTerm) {
+      const lowercaseSearchTerm = searchTerm.toLowerCase();
+      result = result.filter(
+        stock => 
+          stock.ticker.toLowerCase().includes(lowercaseSearchTerm) ||
+          stock.name.toLowerCase().includes(lowercaseSearchTerm)
+      );
     }
-    setSortConfig({ key, direction });
-  };
+    
+    // Apply sector filter
+    if (selectedSector !== "All") {
+      result = result.filter(
+        stock => stock.sector === selectedSector
+      );
+    }
+    
+    // Apply sorting
+    if (sortConfig.key) {
+      result.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    
+    return result;
+  }, [searchTerm, selectedSector, sortConfig]);
+
+  // Handle sorting - memoized to prevent recreating on each render
+  const requestSort = useCallback((key) => {
+    setSortConfig(prevConfig => {
+      let direction = "ascending";
+      if (prevConfig.key === key && prevConfig.direction === "ascending") {
+        direction = "descending";
+      }
+      return { key, direction };
+    });
+  }, []);
   
-  // Open add stock modal
-  const handleAddClick = (stock) => {
+  // Open add stock modal - memoized
+  const handleAddClick = useCallback((stock) => {
     setSelectedStock(stock);
     setQuantity(1);
     setIsAddModalOpen(true);
-  };
+  }, []);
   
-  // Handle adding stock to portfolio
-  const handleAddStock = () => {
+  // Handle adding stock to portfolio - memoized
+  const handleAddStock = useCallback(() => {
+    if (!selectedStock) return;
+    
     // This would connect to your backend API
     console.log(`Adding ${quantity} shares of ${selectedStock.ticker} to portfolio ${selectedPortfolio}`);
     
-    // Close modal
+    // Close modal first to improve perceived performance
     setIsAddModalOpen(false);
     
-    // Show success message (would be implemented with a toast notification)
-    toast.success(`Added ${quantity} shares of ${selectedStock.ticker} to your portfolio`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+    // Show success message with a slight delay to ensure UI updates first
+    setTimeout(() => {
+      toast.success(`Added ${quantity} shares of ${selectedStock.ticker} to your portfolio`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }, 100);
     
-  };
+  }, [quantity, selectedStock, selectedPortfolio]);
+
+  // Memoize the search input handler to debounce frequent updates
+  const handleSearchChange = useCallback((e) => {
+    setSearchTerm(e.target.value);
+  }, []);
+
+  // Memoize the sector select handler
+  const handleSectorChange = useCallback((e) => {
+    setSelectedSector(e.target.value);
+  }, []);
+
+  // Memoize quantity handlers
+  const decreaseQuantity = useCallback(() => {
+    setQuantity(prev => Math.max(1, prev - 1));
+  }, []);
+
+  const increaseQuantity = useCallback(() => {
+    setQuantity(prev => prev + 1);
+  }, []);
+
+  const handleQuantityChange = useCallback((e) => {
+    setQuantity(Math.max(1, parseInt(e.target.value) || 1));
+  }, []);
+
+  const handlePortfolioChange = useCallback((e) => {
+    setSelectedPortfolio(Number(e.target.value));
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setIsAddModalOpen(false);
+  }, []);
   
   return (
     <div className="market-container">
+      <ToastContainer />
+      
       <div className="market-header">
         <h1>Market</h1>
         <p className="market-subheader">Browse and add stocks to your portfolios</p>
@@ -177,7 +216,7 @@ const marketStocksData = [{'ticker': 'AAPL',
             type="text"
             placeholder="Search by ticker or company name..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="market-search"
           />
         </div>
@@ -187,7 +226,7 @@ const marketStocksData = [{'ticker': 'AAPL',
           <select
             id="sector-select"
             value={selectedSector}
-            onChange={(e) => setSelectedSector(e.target.value)}
+            onChange={handleSectorChange}
             className="sector-select"
           >
             {sectors.map(sector => (
@@ -223,27 +262,28 @@ const marketStocksData = [{'ticker': 'AAPL',
             </tr>
           </thead>
           <tbody>
-            {filteredStocks.map((stock) => (
-              <tr key={stock.ticker}>
-                <td className="ticker-cell">{stock.ticker}</td>
-                <td>{stock.name}</td>
-                <td>${stock.price.toFixed(2)}</td>
-                <td className={stock.change >= 0 ? "positive-change" : "negative-change"}>
-                  {stock.change >= 0 ? "+" : ""}{stock.change}%
-                </td>
-                <td>{stock.marketCap}</td>
-                <td>{stock.sector}</td>
-                <td>
-                  <button 
-                    className="add-stock-btn"
-                    onClick={() => handleAddClick(stock)}
-                  >
-                    Add to Portfolio
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {filteredStocks.length === 0 && (
+            {filteredStocks.length > 0 ? (
+              filteredStocks.map((stock) => (
+                <tr key={stock.ticker}>
+                  <td className="ticker-cell">{stock.ticker}</td>
+                  <td>{stock.name}</td>
+                  <td>${stock.price.toFixed(2)}</td>
+                  <td className={stock.change >= 0 ? "positive-change" : "negative-change"}>
+                    {stock.change >= 0 ? "+" : ""}{stock.change}%
+                  </td>
+                  <td>{stock.marketCap}</td>
+                  <td>{stock.sector}</td>
+                  <td>
+                    <button 
+                      className="add-stock-btn"
+                      onClick={() => handleAddClick(stock)}
+                    >
+                      Add to Portfolio
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
                 <td colSpan="7" className="no-results">
                   No stocks match your search criteria
@@ -254,7 +294,7 @@ const marketStocksData = [{'ticker': 'AAPL',
         </table>
       </div>
       
-      {/* Add Stock Modal */}
+      {/* Add Stock Modal - Only render when open for better performance */}
       {isAddModalOpen && selectedStock && (
         <div className="modal-backdrop">
           <div className="add-stock-modal">
@@ -267,7 +307,7 @@ const marketStocksData = [{'ticker': 'AAPL',
                 <select 
                   id="portfolio-select"
                   value={selectedPortfolio}
-                  onChange={(e) => setSelectedPortfolio(Number(e.target.value))}
+                  onChange={handlePortfolioChange}
                   className="portfolio-select"
                 >
                   {portfolioData.map(portfolio => (
@@ -283,7 +323,7 @@ const marketStocksData = [{'ticker': 'AAPL',
                 <div className="quantity-control">
                   <button 
                     className="quantity-btn"
-                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                    onClick={decreaseQuantity}
                   >
                     -
                   </button>
@@ -292,12 +332,12 @@ const marketStocksData = [{'ticker': 'AAPL',
                     type="number"
                     min="1"
                     value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={handleQuantityChange}
                     className="quantity-input"
                   />
                   <button 
                     className="quantity-btn"
-                    onClick={() => setQuantity(prev => prev + 1)}
+                    onClick={increaseQuantity}
                   >
                     +
                   </button>
@@ -323,7 +363,7 @@ const marketStocksData = [{'ticker': 'AAPL',
             <div className="modal-actions">
               <button 
                 className="cancel-btn"
-                onClick={() => setIsAddModalOpen(false)}
+                onClick={closeModal}
               >
                 Cancel
               </button>
