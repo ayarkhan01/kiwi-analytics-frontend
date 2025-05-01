@@ -1,91 +1,94 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { transactionsData } from "./transactions_data";
 import "./transactions.css";
 
 const Transactions = () => {
-  // Sample transaction data matching backend format
-  const sampleData = [
-    {
-      id: 1,
-      portfolio: 'Retirement Portfolio',
-      ticker: 'AAPL',
-      type: 'Buy',
-      quantity: 10,
-      price: 150.0,
-      dateTime: '2025-04-15 18:34:45'
-    },
-    {
-      id: 2,
-      portfolio: 'Retirement Portfolio',
-      ticker: 'GOOGL',
-      type: 'Buy',
-      quantity: 5,
-      price: 2800.0,
-      dateTime: '2025-04-15 18:34:45'
-    },
-    {
-      id: 3,
-      portfolio: 'Swing Trades',
-      ticker: 'TSLA',
-      type: 'Buy',
-      quantity: 3,
-      price: 700.0,
-      dateTime: '2025-04-15 18:34:45'
-    },
-    {
-      id: 4,
-      portfolio: 'Swing Trades',
-      ticker: 'TSLA',
-      type: 'Sell',
-      quantity: 1,
-      price: 750.0,
-      dateTime: '2025-04-15 18:34:45'
+  // State for filters and sorting
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [selectedPortfolios, setSelectedPortfolios] = useState([]);
+  const [selectedTickers, setSelectedTickers] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [sortDirection, setSortDirection] = useState('desc'); // 'desc' = newest first, 'asc' = oldest first
+  
+  // Get unique portfolios, tickers, and transaction types
+  const uniquePortfolios = [...new Set(transactionsData.map(t => t.portfolio))];
+  const uniqueTickers = [...new Set(transactionsData.map(t => t.ticker))];
+  const transactionTypes = ["Buy", "Sell"];
+  
+  // Apply filters and sorting
+  useEffect(() => {
+    let result = [...transactionsData];
+    
+    // Apply portfolio filter if any selected
+    if (selectedPortfolios.length > 0) {
+      result = result.filter(t => selectedPortfolios.includes(t.portfolio));
     }
-  ];
-
-  // State for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  
-  // Search state
-  const [searchTerm, setSearchTerm] = useState("");
-  
-  // Filter data based on search term
-  const filteredData = sampleData.filter(transaction => {
-    if (searchTerm === "") return true;
     
-    const searchLower = searchTerm.toLowerCase();
+    // Apply ticker filter if any selected
+    if (selectedTickers.length > 0) {
+      result = result.filter(t => selectedTickers.includes(t.ticker));
+    }
     
-    // Search across all columns
-    return (
-      transaction.portfolio.toLowerCase().includes(searchLower) ||
-      transaction.ticker.toLowerCase().includes(searchLower) ||
-      transaction.type.toLowerCase().includes(searchLower) ||
-      transaction.quantity.toString().includes(searchLower) ||
-      transaction.price.toString().includes(searchLower) ||
-      transaction.dateTime.toLowerCase().includes(searchLower)
+    // Apply transaction type filter if any selected
+    if (selectedTypes.length > 0) {
+      result = result.filter(t => selectedTypes.includes(t.type));
+    }
+    
+    // Sort by date
+    result.sort((a, b) => {
+      const dateA = new Date(a.dateTime);
+      const dateB = new Date(b.dateTime);
+      return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+    
+    setFilteredTransactions(result);
+  }, [selectedPortfolios, selectedTickers, selectedTypes, sortDirection]);
+  
+  // Initialize with all transactions sorted by newest first
+  useEffect(() => {
+    const sortedTransactions = [...transactionsData].sort((a, b) => {
+      const dateA = new Date(a.dateTime);
+      const dateB = new Date(b.dateTime);
+      return dateB - dateA; // Newest first
+    });
+    
+    setFilteredTransactions(sortedTransactions);
+  }, []);
+  
+  // Toggle filter selection
+  const togglePortfolioFilter = (portfolio) => {
+    setSelectedPortfolios(prev => 
+      prev.includes(portfolio) 
+        ? prev.filter(p => p !== portfolio) 
+        : [...prev, portfolio]
     );
-  });
-  
-  // Calculate pagination
-  const totalTransactions = filteredData.length;
-  const totalPages = Math.ceil(totalTransactions / rowsPerPage);
-  
-  // Get current page data
-  const indexOfLastTransaction = currentPage * rowsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-  const currentTransactions = filteredData.slice(indexOfFirstTransaction, indexOfLastTransaction);
-  
-  // Page change handlers
-  const goToNextPage = () => {
-    setCurrentPage(currentPage + 1 <= totalPages ? currentPage + 1 : currentPage);
   };
   
-  const goToPreviousPage = () => {
-    setCurrentPage(currentPage - 1 >= 1 ? currentPage - 1 : currentPage);
+  const toggleTickerFilter = (ticker) => {
+    setSelectedTickers(prev => 
+      prev.includes(ticker) 
+        ? prev.filter(t => t !== ticker) 
+        : [...prev, ticker]
+    );
   };
   
-  const goToPage = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const toggleTypeFilter = (type) => {
+    setSelectedTypes(prev => 
+      prev.includes(type) 
+        ? prev.filter(t => t !== type) 
+        : [...prev, type]
+    );
+  };
+  
+  // Toggle sort direction
+  const toggleSortDirection = () => {
+    setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
+  };
+  
+  // Format date for display
+  const formatDateTime = (dateTimeStr) => {
+    const date = new Date(dateTimeStr);
+    return date.toLocaleString();
   };
 
   return (
@@ -97,23 +100,56 @@ const Transactions = () => {
         </div>
       </div>
       
-      <div className="transactions-controls">
-        <div className="search-box">
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+      <div className="filter-controls">
+        <div className="filter-section">
+          <div className="filter-label">Portfolios:</div>
+          <div className="filter-options">
+            {uniquePortfolios.map(portfolio => (
+              <button 
+                key={portfolio}
+                className={`filter-btn ${selectedPortfolios.includes(portfolio) ? 'active' : ''}`}
+                onClick={() => togglePortfolioFilter(portfolio)}
+              >
+                {portfolio}
+              </button>
+            ))}
+          </div>
         </div>
         
-        <div className="results-control">
-          <span>Show Results</span>
-          <div className="dropdown">
-            <button className="dropdown-toggle">
-              {rowsPerPage} <span className="caret">▼</span>
-            </button>
+        <div className="filter-section">
+          <div className="filter-label">Stocks:</div>
+          <div className="filter-options">
+            {uniqueTickers.map(ticker => (
+              <button 
+                key={ticker}
+                className={`filter-btn ${selectedTickers.includes(ticker) ? 'active' : ''}`}
+                onClick={() => toggleTickerFilter(ticker)}
+              >
+                {ticker}
+              </button>
+            ))}
           </div>
+        </div>
+        
+        <div className="filter-section">
+          <div className="filter-label">Type:</div>
+          <div className="filter-options">
+            {transactionTypes.map(type => (
+              <button 
+                key={type}
+                className={`filter-btn ${selectedTypes.includes(type) ? 'active' : ''}`}
+                onClick={() => toggleTypeFilter(type)}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        <div className="sort-control">
+          <button className="sort-btn" onClick={toggleSortDirection}>
+            {sortDirection === 'desc' ? 'Newest First ▼' : 'Oldest First ▲'}
+          </button>
         </div>
       </div>
       
@@ -130,7 +166,7 @@ const Transactions = () => {
             </tr>
           </thead>
           <tbody>
-            {currentTransactions.map((transaction) => (
+            {filteredTransactions.map((transaction) => (
               <tr key={transaction.id}>
                 <td>{transaction.portfolio}</td>
                 <td>{transaction.ticker}</td>
@@ -139,44 +175,20 @@ const Transactions = () => {
                 </td>
                 <td>{transaction.quantity}</td>
                 <td>${transaction.price.toFixed(2)}</td>
-                <td>{transaction.dateTime}</td>
+                <td>{formatDateTime(transaction.dateTime)}</td>
               </tr>
             ))}
+            {filteredTransactions.length === 0 && (
+              <tr>
+                <td colSpan="6" className="no-results">No transactions match the selected filters</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
       
-      <div className="pagination-container">
-        <div className="showing-info">
-          Showing {currentTransactions.length} of {totalTransactions}
-        </div>
-        <div className="pagination-controls">
-          <button 
-            className="page-btn prev-btn" 
-            onClick={goToPreviousPage}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          
-          {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index + 1}
-              className={`page-num-btn ${currentPage === index + 1 ? "active" : ""}`}
-              onClick={() => goToPage(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-          
-          <button 
-            className="page-btn next-btn" 
-            onClick={goToNextPage}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </div>
+      <div className="transactions-count">
+        Showing {filteredTransactions.length} of {transactionsData.length} transactions
       </div>
     </div>
   );

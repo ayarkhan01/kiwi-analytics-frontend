@@ -1,91 +1,90 @@
 // portfolio_data.js
 // Sample data based on your JSON
 export const portfolioData = [
-    {
-      portfolio_id: 1,
-      portfolio_name: "Retirement Portfolio",
-      strategy: "long_term",
-      positions: [
-        {
-          id: 1,
-          ticker: "AAPL",
-          quantity: 5,
-          average_price: 150.0,
-          created_at: "2025-04-15T18:34:24",
-          updated_at: "2025-04-22T00:28:24",
-          current_price: 188.38,
-          percent_change: -7.29 // This is the daily price change %
-        },
-        {
-          id: 4,
-          ticker: "MSFT",
-          quantity: 10,
-          average_price: 100.0,
-          created_at: "2025-04-22T00:22:51",
-          updated_at: "2025-04-22T00:22:51",
-          current_price: 359.84,
-          percent_change: -3.56
-        },
-        {
-          id: 2,
-          ticker: "GOOGL",
-          quantity: 5,
-          average_price: 2800.0,
-          created_at: "2025-04-15T18:34:24",
-          updated_at: "2025-04-15T18:34:24",
-          current_price: 147.74,
-          percent_change: -3.20
-        },
-        {
-          id: 6,
-          ticker: "AMZN",
-          quantity: 8,
-          average_price: 120.0,
-          created_at: "2025-04-22T00:31:22",
-          updated_at: "2025-04-22T00:31:22", 
-          current_price: 178.14,
-          percent_change: -4.15
-        },
-        {
-          id: 7,
-          ticker: "META",
-          quantity: 12,
-          average_price: 300.0,
-          created_at: "2025-04-22T00:31:22",
-          updated_at: "2025-04-22T00:31:22",
-          current_price: 518.00,
-          percent_change: -5.06
-        }
-      ]
-    },
-    {
-      portfolio_id: 2,
-      portfolio_name: "Swing Trades",
-      strategy: "short_term",
-      positions: [
-        {
-          id: 3,
-          ticker: "TSLA",
-          quantity: 3,
-          average_price: 700.0,
-          created_at: "2025-04-15T18:34:24",
-          updated_at: "2025-04-15T18:34:24",
-          current_price: 292.03,
-          percent_change: 2.15
-        }
-      ]
-    }
-  ];
-  
-  // Company name mapping
-  export const companyNames = {
-    "AAPL": "Apple Inc.",
-    "MSFT": "Microsoft Corp.",
-    "GOOGL": "Alphabet Inc.",
-    "AMZN": "Amazon.com Inc.",
-    "META": "Meta Platforms Inc.",
-    "TSLA": "Tesla Inc."
-  };
+  {
+    "portfolio_id": 1,
+    "portfolio_name": "Retirement Portfolio",
+    "strategy": "long_term",
+    "positions": [
+      {
+        "id": 1,
+        "ticker": "AAPL",
+        "quantity": 84,
+        "average_price": 160.72,
+        "created_at": "2025-04-15T18:34:24",
+        "updated_at": "2025-04-30T03:11:42",
+        "current_price": 211.21,
+        "percent_change": 0.51
+      },
+      {
+        "id": 2,
+        "ticker": "GOOGL",
+        "quantity": 5,
+        "average_price": 2800.0,
+        "created_at": "2025-04-15T18:34:24",
+        "updated_at": "2025-04-15T18:34:24",
+        "current_price": 160.16,
+        "percent_change": -0.28
+      },
+      {
+        "id": 7,
+        "ticker": "META",
+        "quantity": 11,
+        "average_price": 175.0,
+        "created_at": "2025-04-30T03:15:06",
+        "updated_at": "2025-04-30T03:15:06",
+        "current_price": 554.44,
+        "percent_change": 0.85
+      },
+      {
+        "id": 4,
+        "ticker": "MSFT",
+        "quantity": 10,
+        "average_price": 100.0,
+        "created_at": "2025-04-22T00:22:51",
+        "updated_at": "2025-04-22T00:22:51",
+        "current_price": 394.04,
+        "percent_change": 0.74
+      }
+    ]
+  },
+  {
+    "portfolio_id": 2,
+    "portfolio_name": "Swing Trades",
+    "strategy": "short_term",
+    "positions": [
+      {
+        "id": 6,
+        "ticker": "META",
+        "quantity": 113,
+        "average_price": 75.0,
+        "created_at": "2025-04-30T03:14:14",
+        "updated_at": "2025-04-30T03:14:14",
+        "current_price": 554.44,
+        "percent_change": 0.85
+      },
+      {
+        "id": 3,
+        "ticker": "TSLA",
+        "quantity": 3,
+        "average_price": 700.0,
+        "created_at": "2025-04-15T18:34:24",
+        "updated_at": "2025-04-15T18:34:24",
+        "current_price": 292.03,
+        "percent_change": 2.15
+      }
+    ]
+  }
+];
+export const companyNames = {
+  "AAPL": "Apple Inc.",
+  "MSFT": "Microsoft Corp.",
+  "GOOGL": "Alphabet Inc.",
+  "AMZN": "Amazon.com Inc.",
+  "META": "Meta Platforms Inc.",
+  "TSLA": "Tesla Inc."
+};
+
   
   // Format currency 
   export const formatCurrency = (value) => {

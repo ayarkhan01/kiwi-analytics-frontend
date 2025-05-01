@@ -137,7 +137,15 @@
   color: #ef4444;
 }
 
-.daily-change {
+.daily-change.positive {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+}
+
+.daily-change.negative {
   font-size: 14px;
   font-weight: 600;
   padding: 4px 8px;
