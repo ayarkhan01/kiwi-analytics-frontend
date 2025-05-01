@@ -3,104 +3,78 @@ import "./Market.css";
 import { portfolioData } from "../portfolio/portfolio_data";
 
 // Sample market data - would come from your backend API eventually
-const marketStocksData = [
-  {
-    ticker: "AAPL",
-    name: "Apple Inc.",
-    price: 211.21,
-    change: 0.51,
-    marketCap: "3.48T",
-    sector: "Technology"
-  },
-  {
-    ticker: "MSFT",
-    name: "Microsoft Corp.",
-    price: 394.04,
-    change: 0.74,
-    marketCap: "2.93T",
-    sector: "Technology"
-  },
-  {
-    ticker: "GOOGL",
-    name: "Alphabet Inc.",
-    price: 160.16,
-    change: -0.28,
-    marketCap: "1.95T",
-    sector: "Technology"
-  },
-  {
-    ticker: "AMZN",
-    name: "Amazon.com Inc.",
-    price: 176.35,
-    change: 1.21,
-    marketCap: "1.84T",
-    sector: "Consumer Cyclical"
-  },
-  {
-    ticker: "META",
-    name: "Meta Platforms Inc.",
-    price: 554.44,
-    change: 0.85,
-    marketCap: "1.38T",
-    sector: "Technology"
-  },
-  {
-    ticker: "TSLA",
-    name: "Tesla Inc.",
-    price: 292.03,
-    change: 2.15,
-    marketCap: "930.01B",
-    sector: "Automotive"
-  },
-  {
-    ticker: "NVDA",
-    name: "NVIDIA Corp.",
-    price: 874.15,
-    change: 3.05,
-    marketCap: "2.15T",
-    sector: "Technology"
-  },
-  {
-    ticker: "JPM",
-    name: "JPMorgan Chase & Co.",
-    price: 182.37,
-    change: -0.43,
-    marketCap: "523.60B",
-    sector: "Financial Services"
-  },
-  {
-    ticker: "WMT",
-    name: "Walmart Inc.",
-    price: 69.23,
-    change: 0.36,
-    marketCap: "557.80B",
-    sector: "Consumer Defensive"
-  },
-  {
-    ticker: "JNJ",
-    name: "Johnson & Johnson",
-    price: 148.56,
-    change: -0.78,
-    marketCap: "357.99B",
-    sector: "Healthcare"
-  },
-  {
-    ticker: "DIS",
-    name: "The Walt Disney Co.",
-    price: 113.44,
-    change: 1.37,
-    marketCap: "207.45B",
-    sector: "Communication Services"
-  },
-  {
-    ticker: "PFE",
-    name: "Pfizer Inc.",
-    price: 27.42,
-    change: -0.65,
-    marketCap: "155.24B",
-    sector: "Healthcare"
-  }
-];
+const marketStocksData = [{'ticker': 'AAPL',
+  'name': 'Apple Inc.',
+  'price': 212.5,
+  'change': 1.29,
+  'marketCap': '3.19T',
+  'sector': 'Technology'},
+ {'ticker': 'MSFT',
+  'name': 'Microsoft Corporation',
+  'price': 395.26,
+  'change': 1.22,
+  'marketCap': '2.94T',
+  'sector': 'Technology'},
+ {'ticker': 'GOOGL',
+  'name': 'Alphabet Inc.',
+  'price': 158.8,
+  'change': -1.36,
+  'marketCap': '1.95T',
+  'sector': 'Communication Services'},
+ {'ticker': 'AMZN',
+  'name': 'Amazon.com, Inc.',
+  'price': 184.42,
+  'change': -2.97,
+  'marketCap': '1.99T',
+  'sector': 'Consumer Cyclical'},
+ {'ticker': 'META',
+  'name': 'Meta Platforms, Inc.',
+  'price': 549.0,
+  'change': -5.44,
+  'marketCap': '1.4T',
+  'sector': 'Communication Services'},
+ {'ticker': 'TSLA',
+  'name': 'Tesla, Inc.',
+  'price': 282.16,
+  'change': -9.87,
+  'marketCap': '940.62B',
+  'sector': 'Consumer Cyclical'},
+ {'ticker': 'NVDA',
+  'name': 'NVIDIA Corporation',
+  'price': 108.92,
+  'change': -0.1,
+  'marketCap': '2.66T',
+  'sector': 'Technology'},
+ {'ticker': 'JPM',
+  'name': 'JP Morgan Chase & Co.',
+  'price': 244.62,
+  'change': 0.0,
+  'marketCap': '679.82B',
+  'sector': 'Financial Services'},
+ {'ticker': 'WMT',
+  'name': 'Walmart Inc.',
+  'price': 97.25,
+  'change': 1.21,
+  'marketCap': '778.09B',
+  'sector': 'Consumer Defensive'},
+ {'ticker': 'JNJ',
+  'name': 'Johnson & Johnson',
+  'price': 156.31,
+  'change': 0.4,
+  'marketCap': '376.09B',
+  'sector': 'Healthcare'},
+ {'ticker': 'DIS',
+  'name': 'Walt Disney Company (The)',
+  'price': 90.95,
+  'change': -0.22,
+  'marketCap': '164.82B',
+  'sector': 'Communication Services'},
+ {'ticker': 'PFE',
+  'name': 'Pfizer, Inc.',
+  'price': 24.41,
+  'change': 0.62,
+  'marketCap': '138.44B',
+  'sector': 'Healthcare'}];
 
 const Market = () => {
   // State management

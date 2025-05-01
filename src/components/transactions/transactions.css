@@ -17,7 +17,7 @@
 }
 
 .transactions-subheader {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 15px;
 }
@@ -28,17 +28,109 @@
   font-weight: normal;
 }
 
-/* Filter controls */
+/* Filter toggle button */
+.filter-toggle-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-toggle-btn {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-toggle-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.filter-badge {
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.reset-filters-btn {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-filters-btn:hover {
+  background-color: #f3f4f6;
+  color: #ef4444;
+}
+
+.sort-control {
+  margin-left: auto;
+}
+
+.sort-btn {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.sort-btn:hover {
+  background-color: #f5f5f5;
+}
+
+/* Filter controls - hidden by default */
 .filter-controls {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-bottom: 25px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .filter-section {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .filter-label {
@@ -46,6 +138,7 @@
   font-weight: 500;
   color: #555;
   font-size: 14px;
+  padding-top: 8px;
 }
 
 .filter-options {
@@ -55,10 +148,10 @@
 }
 
 .filter-btn {
-  background-color: #f1f5f9;
+  background-color: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  padding: 6px 12px;
+  border-radius: 6px;
+  padding: 8px 14px;
   font-size: 13px;
   cursor: pointer;
   color: #555;
@@ -66,7 +159,7 @@
 }
 
 .filter-btn:hover {
-  background-color: #e2e8f0;
+  background-color: #f1f5f9;
 }
 
 .filter-btn.active {
@@ -75,34 +168,12 @@
   border-color: #3b82f6;
 }
 
-.sort-control {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
-.sort-btn {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  color: #555;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-}
-
-.sort-btn:hover {
-  background-color: #f5f5f5;
-}
-
 /* Table styles */
 .transactions-table-container {
   overflow-x: auto;
   margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
 }
 
 .transactions-table {
@@ -117,7 +188,7 @@
   text-align: left;
   padding: 15px;
   font-size: 14px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .transactions-table td {
@@ -125,6 +196,10 @@
   border-bottom: 1px solid #e0e0e0;
   color: #333;
   font-size: 14px;
+}
+
+.transactions-table tr:last-child td {
+  border-bottom: none;
 }
 
 .transactions-table tr:hover {
@@ -151,4 +226,39 @@
   margin-top: 20px;
   color: #666;
   font-size: 14px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .transactions-container {
+    padding: 20px 15px;
+    margin: 15px;
+  }
+  
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .filter-label {
+    width: 100%;
+    padding-top: 0;
+    margin-bottom: 5px;
+  }
+  
+  .filter-toggle-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .sort-control {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .sort-btn {
+    width: 100%;
+  }
 }

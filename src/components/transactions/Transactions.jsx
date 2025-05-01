@@ -9,6 +9,7 @@ const Transactions = () => {
   const [selectedTickers, setSelectedTickers] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [sortDirection, setSortDirection] = useState('desc'); // 'desc' = newest first, 'asc' = oldest first
+  const [isFiltersVisible, setIsFiltersVisible] = useState(false);
   
   // Get unique portfolios, tickers, and transaction types
   const uniquePortfolios = [...new Set(transactionsData.map(t => t.portfolio))];
@@ -85,11 +86,27 @@ const Transactions = () => {
     setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
   };
   
+  // Toggle filters visibility
+  const toggleFiltersVisibility = () => {
+    setIsFiltersVisible(!isFiltersVisible);
+  };
+  
+  // Reset all filters
+  const resetFilters = () => {
+    setSelectedPortfolios([]);
+    setSelectedTickers([]);
+    setSelectedTypes([]);
+    setSortDirection('desc');
+  };
+  
   // Format date for display
   const formatDateTime = (dateTimeStr) => {
     const date = new Date(dateTimeStr);
     return date.toLocaleString();
   };
+
+  // Count active filters
+  const activeFiltersCount = selectedPortfolios.length + selectedTickers.length + selectedTypes.length;
 
   return (
     <div className="transactions-container">
@@ -100,51 +117,26 @@ const Transactions = () => {
         </div>
       </div>
       
-      <div className="filter-controls">
-        <div className="filter-section">
-          <div className="filter-label">Portfolios:</div>
-          <div className="filter-options">
-            {uniquePortfolios.map(portfolio => (
-              <button 
-                key={portfolio}
-                className={`filter-btn ${selectedPortfolios.includes(portfolio) ? 'active' : ''}`}
-                onClick={() => togglePortfolioFilter(portfolio)}
-              >
-                {portfolio}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Filter toggle button */}
+      <div className="filter-toggle-container">
+        <button 
+          className="filter-toggle-btn" 
+          onClick={toggleFiltersVisibility}
+        >
+          {isFiltersVisible ? 'Hide Filters' : 'Show Filters'} 
+          {activeFiltersCount > 0 && (
+            <span className="filter-badge">{activeFiltersCount}</span>
+          )}
+        </button>
         
-        <div className="filter-section">
-          <div className="filter-label">Stocks:</div>
-          <div className="filter-options">
-            {uniqueTickers.map(ticker => (
-              <button 
-                key={ticker}
-                className={`filter-btn ${selectedTickers.includes(ticker) ? 'active' : ''}`}
-                onClick={() => toggleTickerFilter(ticker)}
-              >
-                {ticker}
-              </button>
-            ))}
-          </div>
-        </div>
-        
-        <div className="filter-section">
-          <div className="filter-label">Type:</div>
-          <div className="filter-options">
-            {transactionTypes.map(type => (
-              <button 
-                key={type}
-                className={`filter-btn ${selectedTypes.includes(type) ? 'active' : ''}`}
-                onClick={() => toggleTypeFilter(type)}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-        </div>
+        {activeFiltersCount > 0 && (
+          <button 
+            className="reset-filters-btn" 
+            onClick={resetFilters}
+          >
+            Reset Filters
+          </button>
+        )}
         
         <div className="sort-control">
           <button className="sort-btn" onClick={toggleSortDirection}>
@@ -152,6 +144,56 @@ const Transactions = () => {
           </button>
         </div>
       </div>
+      
+      {/* Collapsible filters */}
+      {isFiltersVisible && (
+        <div className="filter-controls">
+          <div className="filter-section">
+            <div className="filter-label">Portfolios:</div>
+            <div className="filter-options">
+              {uniquePortfolios.map(portfolio => (
+                <button 
+                  key={portfolio}
+                  className={`filter-btn ${selectedPortfolios.includes(portfolio) ? 'active' : ''}`}
+                  onClick={() => togglePortfolioFilter(portfolio)}
+                >
+                  {portfolio}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div className="filter-section">
+            <div className="filter-label">Stocks:</div>
+            <div className="filter-options">
+              {uniqueTickers.map(ticker => (
+                <button 
+                  key={ticker}
+                  className={`filter-btn ${selectedTickers.includes(ticker) ? 'active' : ''}`}
+                  onClick={() => toggleTickerFilter(ticker)}
+                >
+                  {ticker}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div className="filter-section">
+            <div className="filter-label">Type:</div>
+            <div className="filter-options">
+              {transactionTypes.map(type => (
+                <button 
+                  key={type}
+                  className={`filter-btn ${selectedTypes.includes(type) ? 'active' : ''}`}
+                  onClick={() => toggleTypeFilter(type)}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="transactions-table-container">
         <table className="transactions-table">

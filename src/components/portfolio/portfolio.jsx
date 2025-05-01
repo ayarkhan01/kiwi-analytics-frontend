@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import "./portfolio.css";
 import { 
   portfolioData, 
-  companyNames, 
   formatCurrency, 
   formatPercentage, 
   formatStrategy,
   calculatePortfolioTotal,
   calculatePortfolioProfitLoss,
-  calculatePortfolioProfitLossPercentage,
-  calculatePositionDetails
+  calculatePortfolioProfitLossPercentage
 } from "./portfolio_data";
 
 const Portfolio = () => {
@@ -60,55 +58,51 @@ const Portfolio = () => {
         
         {/* Positions */}
         <div className="positions-container">
-          {selectedPortfolio.positions.map((position) => {
-            const details = calculatePositionDetails(position);
-            
-            return (
-              <div key={position.id} className="position-card">
-                <div className="position-header">
-                  <div className="position-ticker">
-                    <span className="ticker">{position.ticker}</span>
-                    <span className={`daily-change ${position.percent_change < 0 ? "negative" : "positive"}`}>
-                      {formatPercentage(position.percent_change)}
-                    </span>
-                  </div>
-                  <div className="position-price">
-                    {formatCurrency(position.current_price)}
-                  </div>
+          {selectedPortfolio.positions.map((position) => (
+            <div key={position.id} className="position-card">
+              <div className="position-header">
+                <div className="position-ticker">
+                  <span className="ticker">{position.ticker}</span>
+                  <span className={`daily-change ${position.percent_change < 0 ? "negative" : "positive"}`}>
+                    {formatPercentage(position.percent_change)}
+                  </span>
+                </div>
+                <div className="position-price">
+                  {formatCurrency(position.current_price)}
+                </div>
+              </div>
+              
+              <div className="company-name">{position.name}</div>
+              
+              <div className="position-value-section">
+                <div className="total-value">
+                  <span className="value-label">Market Value</span>
+                  <span className="value-amount">{formatCurrency(position.market_value)}</span>
                 </div>
                 
-                <div className="company-name">{companyNames[position.ticker]}</div>
+                <div className="profit-loss-info">
+                  <span className={`profit-loss-value ${position.profit_loss >= 0 ? 'positive' : 'negative'}`}>
+                    {formatCurrency(position.profit_loss)} ({formatPercentage(position.profit_loss_percent)})
+                  </span>
+                </div>
                 
-                <div className="position-value-section">
-                  <div className="total-value">
-                    <span className="value-label">Market Value</span>
-                    <span className="value-amount">{formatCurrency(details.marketValue)}</span>
+                <div className="position-details">
+                  <div className="detail-item">
+                    <span className="detail-label">Quantity</span>
+                    <span className="detail-value">{position.quantity}</span>
                   </div>
-                  
-                  <div className="profit-loss-info">
-                    <span className={`profit-loss-value ${details.profitLoss >= 0 ? 'positive' : 'negative'}`}>
-                      {formatCurrency(details.profitLoss)} ({formatPercentage(details.profitLossPercentage)})
-                    </span>
+                  <div className="detail-item">
+                    <span className="detail-label">Avg Price</span>
+                    <span className="detail-value">{formatCurrency(position.average_price)}</span>
                   </div>
-                  
-                  <div className="position-details">
-                    <div className="detail-item">
-                      <span className="detail-label">Quantity</span>
-                      <span className="detail-value">{position.quantity}</span>
-                    </div>
-                    <div className="detail-item">
-                      <span className="detail-label">Avg Price</span>
-                      <span className="detail-value">{formatCurrency(position.average_price)}</span>
-                    </div>
-                    <div className="detail-item">
-                      <span className="detail-label">Cost Basis</span>
-                      <span className="detail-value">{formatCurrency(details.costBasis)}</span>
-                    </div>
+                  <div className="detail-item">
+                    <span className="detail-label">Cost Basis</span>
+                    <span className="detail-value">{formatCurrency(position.cost_basis)}</span>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </div>
