@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import Login from "./components/login/Login.jsx";
 import About from "./components/about/About.jsx";
-import Portfolio from "./components/portfolio/portfolio.jsx";
+import Portfolio from "./components/portfolio/Portfolio.jsx";
 import Market from "./components/market/Market.jsx";
-import Navbar from "./components/NavBar/navbar.jsx";
+import Navbar from "./components/NavBar/Navbar.jsx";
 import Transactions from "./components/transactions/Transactions.jsx";
 import "./index.css";
 

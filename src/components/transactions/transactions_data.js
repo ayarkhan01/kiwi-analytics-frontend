@@ -134,27 +134,3 @@ export const transactionsData = [{'id': 1,
     'quantity': 113,
     'price': 75.0,
     'dateTime': '2025-04-30 03:14:14'}];
-  
-  // Helper functions for transaction data
-  export const filterTransactions = (data, searchTerm) => {
-    if (!searchTerm) return data;
-    
-    const searchLower = searchTerm.toLowerCase();
-    
-    return data.filter(transaction => (
-      transaction.portfolio.toLowerCase().includes(searchLower) ||
-      transaction.ticker.toLowerCase().includes(searchLower) ||
-      transaction.type.toLowerCase().includes(searchLower) ||
-      transaction.quantity.toString().includes(searchLower) ||
-      transaction.price.toString().includes(searchLower) ||
-      transaction.dateTime.toLowerCase().includes(searchLower)
-    ));
-  };
-  
-  export const paginateTransactions = (data, currentPage, rowsPerPage) => {
-    const indexOfLastTransaction = currentPage * rowsPerPage;
-    const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-    return data.slice(indexOfFirstTransaction, indexOfLastTransaction);
-  };
-  
-  export default transactionsData;

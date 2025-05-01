@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "./Market.css";
 import { portfolioData } from "../portfolio/portfolio_data";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Sample market data - would come from your backend API eventually
 const marketStocksData = [{'ticker': 'AAPL',
@@ -76,55 +78,55 @@ const marketStocksData = [{'ticker': 'AAPL',
   'marketCap': '138.44B',
   'sector': 'Healthcare'}];
 
-const Market = () => {
-  // State management
-  const [marketStocks, setMarketStocks] = useState(marketStocksData);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSector, setSelectedSector] = useState("All");
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" });
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [selectedStock, setSelectedStock] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [selectedPortfolio, setSelectedPortfolio] = useState(portfolioData[0].portfolio_id);
+  const Market = () => {
+    // State management
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedSector, setSelectedSector] = useState("All");
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" });
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [selectedStock, setSelectedStock] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [selectedPortfolio, setSelectedPortfolio] = useState(portfolioData[0].portfolio_id);
+    
+    // Get unique sectors for filter
+    const sectors = ["All", ...new Set(marketStocksData.map(stock => stock.sector))];
+    
+    // Filter stocks based on search and sector using useMemo
+    const filteredStocks = useMemo(() => {
+      let result = [...marketStocksData];
+      
+      // Apply search filter
+      if (searchTerm) {
+        result = result.filter(
+          stock => 
+            stock.ticker.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            stock.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+      
+      // Apply sector filter
+      if (selectedSector !== "All") {
+        result = result.filter(
+          stock => stock.sector === selectedSector
+        );
+      }
+      
+      // Apply sorting
+      if (sortConfig.key) {
+        result.sort((a, b) => {
+          if (a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === "ascending" ? -1 : 1;
+          }
+          if (a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === "ascending" ? 1 : -1;
+          }
+          return 0;
+        });
+      }
+      
+      return result;
+    }, [searchTerm, selectedSector, sortConfig]);
   
-  // Get unique sectors for filter
-  const sectors = ["All", ...new Set(marketStocksData.map(stock => stock.sector))];
-  
-  // Filter stocks based on search and sector
-  useEffect(() => {
-    let filteredStocks = [...marketStocksData];
-    
-    // Apply search filter
-    if (searchTerm) {
-      filteredStocks = filteredStocks.filter(
-        stock => 
-          stock.ticker.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          stock.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    
-    // Apply sector filter
-    if (selectedSector !== "All") {
-      filteredStocks = filteredStocks.filter(
-        stock => stock.sector === selectedSector
-      );
-    }
-    
-    // Apply sorting
-    if (sortConfig.key) {
-      filteredStocks.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    
-    setMarketStocks(filteredStocks);
-  }, [searchTerm, selectedSector, sortConfig]);
   
   // Handle sorting
   const requestSort = (key) => {
@@ -151,7 +153,15 @@ const Market = () => {
     setIsAddModalOpen(false);
     
     // Show success message (would be implemented with a toast notification)
-    alert(`Added ${quantity} shares of ${selectedStock.ticker} to your portfolio`);
+    toast.success(`Added ${quantity} shares of ${selectedStock.ticker} to your portfolio`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    
   };
   
   return (
@@ -213,7 +223,7 @@ const Market = () => {
             </tr>
           </thead>
           <tbody>
-            {marketStocks.map((stock) => (
+            {filteredStocks.map((stock) => (
               <tr key={stock.ticker}>
                 <td className="ticker-cell">{stock.ticker}</td>
                 <td>{stock.name}</td>
@@ -233,7 +243,7 @@ const Market = () => {
                 </td>
               </tr>
             ))}
-            {marketStocks.length === 0 && (
+            {filteredStocks.length === 0 && (
               <tr>
                 <td colSpan="7" className="no-results">
                   No stocks match your search criteria
