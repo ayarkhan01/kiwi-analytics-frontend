@@ -1,5 +1,6 @@
+// navbar.jsx
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import "../NavBar/navbar.css";
+import "./navbar.css";
 import logo from "../../assets/app logo.png";
 
 const Navbar = ({ handleLogout }) => {

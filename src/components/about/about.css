@@ -24,7 +24,7 @@
   background: rgba(255, 255, 255, 0.15);
   border-radius: 1rem;
   box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(0.5rem);
+  /* Removed backdrop-filter for performance */
   padding: 1.5rem;
   width: 300px; /* Fixed width */
   height: 360px; /* Fixed height */
@@ -32,13 +32,13 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: all 300ms ease-in-out;
+  /* Removed transition */
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .team-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  /* Removed transform */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .team-photo {
@@ -49,11 +49,11 @@
   margin: 0 auto 1rem;
   display: block;
   border: 4px solid rgba(255, 255, 255, 0.2);
-  transition: all 300ms ease;
+  /* Removed transition */
 }
 
 .team-card:hover .team-photo {
-  transform: scale(1.05);
+  /* Removed transform */
   border-color: #001f3f;
 }
 
