@@ -11,6 +11,7 @@ import Portfolio from "./components/portfolio/Portfolio.jsx";
 import Market from "./components/market/Market.jsx";
 import Navbar from "./components/NavBar/Navbar.jsx";
 import Transactions from "./components/transactions/Transactions.jsx";
+import Settings from "./components/settings/Settings.jsx";
 import "./index.css";
 
 function App() {
@@ -62,6 +63,10 @@ function App() {
         <Route
           path="/about"
           element={user.isLoggedIn ? <About /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/settings"
+          element={user.isLoggedIn ? <Settings /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>
