@@ -2,6 +2,8 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./navbar.css";
 import logo from "../../assets/app logo.png";
+import { FaCog } from 'react-icons/fa';
+
 
 const Navbar = ({ handleLogout }) => {
   const navigate = useNavigate();
@@ -53,6 +55,13 @@ const Navbar = ({ handleLogout }) => {
         </Link>
       </div>
       <div className="navbar-right">
+        <Link
+          to="/settings"
+          className={`navbar-settings-link ${isActive("/settings") ? "active-settings-link" : ""}`}
+          title="Settings"
+        >
+          <FaCog size={20} />
+        </Link>
         <button onClick={handleLogoutClick} className="navbar-button">
           Logout
         </button>
