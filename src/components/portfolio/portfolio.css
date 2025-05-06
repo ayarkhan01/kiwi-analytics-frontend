@@ -1,4 +1,311 @@
-/* Add this to your portfolio.css file */
+/* Global Styles */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #ffffff;
+  padding: 20px;
+  width: 220px;
+  border-right: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.portfolio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.portfolio-item {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.portfolio-item:hover {
+  background-color: #e2e8f0;
+}
+
+.portfolio-item.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.add-portfolio-button {
+  margin-top: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.add-portfolio-button:hover {
+  background-color: #2563eb;
+}
+
+/* Main Content */
+.main-content {
+  flex-grow: 1;
+  padding: 24px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.portfolio-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.main-content h1 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.portfolio-metrics {
+  display: flex;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.portfolio-total, .portfolio-profit-loss {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.total-label, .profit-loss-label {
+  font-size: 15px;
+  color: #64748b;
+}
+
+.total-amount {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.profit-loss-amount {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.profit-loss-amount.positive {
+  color: #10b981;
+}
+
+.profit-loss-amount.negative {
+  color: #ef4444;
+}
+
+.profit-loss-info {
+  margin: 10px 0;
+}
+
+.profit-loss-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.profit-loss-value.positive {
+  color: #10b981;
+}
+
+.profit-loss-value.negative {
+  color: #ef4444;
+}
+
+.daily-change.positive {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+  background-color: #10b981;
+}
+
+.daily-change.negative {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+  background-color: #ef4444;
+}
+
+.view-selector {
+  background-color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #475569;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin-bottom: 24px;
+}
+
+.positions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.position-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.position-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.position-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.position-ticker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ticker {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.position-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.company-name {
+  color: #64748b;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.position-value-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.total-value {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.value-label {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.value-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.position-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.detail-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.percent-change {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+}
+
+.percent-change.positive {
+  background-color: #10b981;
+}
+
+.percent-change.negative {
+  background-color: #ef4444;
+}
 
 /* Modal Overlay */
 .modal-overlay {
