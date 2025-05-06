@@ -17,11 +17,12 @@ import "./index.css";
 function App() {
   const [user, setUser] = useState({
     user: "",
+    userID: "",
     isLoggedIn: false,
   });
 
   const handleLogout = () => {
-    setUser({ user: "", isLoggedIn: false });
+    setUser({ user: "", userID:"",isLoggedIn: false });
   };
 
   return (
