@@ -4,96 +4,57 @@ import { portfolioData } from "../portfolio/portfolio_data";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Sample market data - would come from your backend API eventually
-const marketStocksData = [{'ticker': 'AAPL',
-  'name': 'Apple Inc.',
-  'price': 212.5,
-  'change': 1.29,
-  'marketCap': '3.19T',
-  'sector': 'Technology'},
- {'ticker': 'MSFT',
-  'name': 'Microsoft Corporation',
-  'price': 395.26,
-  'change': 1.22,
-  'marketCap': '2.94T',
-  'sector': 'Technology'},
- {'ticker': 'GOOGL',
-  'name': 'Alphabet Inc.',
-  'price': 158.8,
-  'change': -1.36,
-  'marketCap': '1.95T',
-  'sector': 'Communication Services'},
- {'ticker': 'AMZN',
-  'name': 'Amazon.com, Inc.',
-  'price': 184.42,
-  'change': -2.97,
-  'marketCap': '1.99T',
-  'sector': 'Consumer Cyclical'},
- {'ticker': 'META',
-  'name': 'Meta Platforms, Inc.',
-  'price': 549.0,
-  'change': -5.44,
-  'marketCap': '1.4T',
-  'sector': 'Communication Services'},
- {'ticker': 'TSLA',
-  'name': 'Tesla, Inc.',
-  'price': 282.16,
-  'change': -9.87,
-  'marketCap': '940.62B',
-  'sector': 'Consumer Cyclical'},
- {'ticker': 'NVDA',
-  'name': 'NVIDIA Corporation',
-  'price': 108.92,
-  'change': -0.1,
-  'marketCap': '2.66T',
-  'sector': 'Technology'},
- {'ticker': 'JPM',
-  'name': 'JP Morgan Chase & Co.',
-  'price': 244.62,
-  'change': 0.0,
-  'marketCap': '679.82B',
-  'sector': 'Financial Services'},
- {'ticker': 'WMT',
-  'name': 'Walmart Inc.',
-  'price': 97.25,
-  'change': 1.21,
-  'marketCap': '778.09B',
-  'sector': 'Consumer Defensive'},
- {'ticker': 'JNJ',
-  'name': 'Johnson & Johnson',
-  'price': 156.31,
-  'change': 0.4,
-  'marketCap': '376.09B',
-  'sector': 'Healthcare'},
- {'ticker': 'DIS',
-  'name': 'Walt Disney Company (The)',
-  'price': 90.95,
-  'change': -0.22,
-  'marketCap': '164.82B',
-  'sector': 'Communication Services'},
- {'ticker': 'PFE',
-  'name': 'Pfizer, Inc.',
-  'price': 24.41,
-  'change': 0.62,
-  'marketCap': '138.44B',
-  'sector': 'Healthcare'}];
-
-// Precompute sectors for better performance
-const sectors = ["All", ...new Set(marketStocksData.map(stock => stock.sector))];
-
 const Market = () => {
   // State management
+  const [marketStocks, setMarketStocks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSector, setSelectedSector] = useState("All");
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" });
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedStock, setSelectedStock] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedPortfolio, setSelectedPortfolio] = useState(portfolioData[0].portfolio_id);
+  const [selectedPortfolio, setSelectedPortfolio] = useState(
+    portfolioData.length > 0 ? portfolioData[0].portfolio_id : null
+  );
+  
+  // Fetch market data from backend API
+  useEffect(() => {
+    const fetchMarketData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('http://127.0.0.1:5000/api/market');
+        
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setMarketStocks(data);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to fetch market data:", err);
+        setError("Failed to load market data. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchMarketData();
+  }, []);
+  
+  // Compute available sectors from the fetched data
+  const sectors = useMemo(() => {
+    if (!marketStocks.length) return ["All"];
+    return ["All", ...new Set(marketStocks.map(stock => stock.sector))];
+  }, [marketStocks]);
   
   // Filter stocks based on search and sector using useMemo
   const filteredStocks = useMemo(() => {
-    let result = [...marketStocksData];
+    if (!marketStocks.length) return [];
+    
+    let result = [...marketStocks];
     
     // Apply search filter
     if (searchTerm) {
@@ -126,7 +87,7 @@ const Market = () => {
     }
     
     return result;
-  }, [searchTerm, selectedSector, sortConfig]);
+  }, [marketStocks, searchTerm, selectedSector, sortConfig]);
 
   // Handle sorting - memoized to prevent recreating on each render
   const requestSort = useCallback((key) => {
@@ -147,18 +108,36 @@ const Market = () => {
   }, []);
   
   // Handle adding stock to portfolio - memoized
-  const handleAddStock = useCallback(() => {
+  const handleAddStock = useCallback(async () => {
     if (!selectedStock) return;
     
-    // This would connect to your backend API
-    console.log(`Adding ${quantity} shares of ${selectedStock.ticker} to portfolio ${selectedPortfolio}`);
-    
-    // Close modal first to improve perceived performance
-    setIsAddModalOpen(false);
-    
-    // Show success message with a slight delay to ensure UI updates first
-    setTimeout(() => {
-      toast.success(`Added ${quantity} shares of ${selectedStock.ticker} to your portfolio`, {
+    try {
+      // Call the backend API to buy the stock
+      const response = await fetch('http://127.0.0.1:5000/api/portfolios/buy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          portfolio_id: selectedPortfolio,
+          ticker: selectedStock.ticker,
+          quantity: quantity,
+          price: selectedStock.price
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add stock to portfolio');
+      }
+
+      const result = await response.json();
+      
+      // Close modal first to improve perceived performance
+      setIsAddModalOpen(false);
+      
+      // Show success message
+      toast.success(result.message || `Added ${quantity} shares of ${selectedStock.ticker} to your portfolio`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -166,8 +145,13 @@ const Market = () => {
         pauseOnHover: true,
         draggable: true,
       });
-    }, 100);
-    
+    } catch (error) {
+      console.error('Error adding stock:', error);
+      toast.error(`Failed to add stock: ${error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
   }, [quantity, selectedStock, selectedPortfolio]);
 
   // Memoize the search input handler to debounce frequent updates
@@ -200,6 +184,39 @@ const Market = () => {
   const closeModal = useCallback(() => {
     setIsAddModalOpen(false);
   }, []);
+  
+  // Render loading state
+  if (isLoading) {
+    return (
+      <div className="market-container">
+        <div className="market-header">
+          <h1>Market</h1>
+          <p className="market-subheader">Loading market data...</p>
+        </div>
+        <div className="loading-indicator">
+          <div className="spinner"></div>
+        </div>
+      </div>
+    );
+  }
+  
+  // Render error state
+  if (error) {
+    return (
+      <div className="market-container">
+        <div className="market-header">
+          <h1>Market</h1>
+          <p className="market-subheader">Error loading market data</p>
+        </div>
+        <div className="error-message">
+          {error}
+          <button className="retry-button" onClick={() => window.location.reload()}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="market-container">
