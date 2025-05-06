@@ -7,23 +7,45 @@ const Login = ({ setUserInParentComponent }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (username === "admin" && password === "admin") {
-      setUserInParentComponent({
-        user: username,
-        isLoggedIn: true,
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
       });
-    } else {
-      // Simplified toast notification
-      toast.error("Invalid credentials", {
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Login successful
+        setUserInParentComponent({
+          user: username,
+          isLoggedIn: true,
+          userID: data.user_id,
+        });
+        toast.success("Login successful!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      } else {
+        // Login failed
+        toast.error(data.error || "Login failed", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+        });
+      }
+    } catch (error) {
+      toast.error("Server error. Please try again.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
       });
     }
   };
@@ -72,7 +94,6 @@ const Login = ({ setUserInParentComponent }) => {
         </form>
       </div>
 
-      {/* Move ToastContainer outside the login form */}
       <ToastContainer />
     </div>
   );
