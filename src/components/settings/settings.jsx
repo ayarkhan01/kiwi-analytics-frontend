@@ -58,12 +58,27 @@ const Settings = ({ user, setUser }) => {
     }
   };
 
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     const confirmed = window.confirm('Are you sure you want to delete the user and log out?');
     if (!confirmed) return;
 
-    setUser({ user: '', userID: '', isLoggedIn: false });
-    toast.success('User logged out and deleted locally');
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/delete_user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.userID }),
+      });
+
+      if (response.ok) {
+        toast.success('User deleted successfully');
+        setUser({ user: '', userID: '', isLoggedIn: false });
+      } else {
+        const error = await response.json();
+        toast.error(`Failed to delete user: ${error.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      toast.error('Error deleting user');
+    }
   };
 
   return (
