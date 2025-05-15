@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Settings.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Settings = ({ user, setUser }) => {
   const [portfolios, setPortfolios] = useState([]);
   const [loading, setLoading] = useState(false); // New loading state
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPortfolios = async () => {
@@ -72,6 +74,7 @@ const Settings = ({ user, setUser }) => {
       if (response.ok) {
         toast.success('User deleted successfully');
         setUser({ user: '', userID: '', isLoggedIn: false });
+        navigate('/login'); // ✅ Redirect to login page
       } else {
         const error = await response.json();
         toast.error(`Failed to delete user: ${error.error || 'Unknown error'}`);
