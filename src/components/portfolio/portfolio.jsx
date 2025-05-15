@@ -9,6 +9,8 @@ import {
   calculatePortfolioProfitLossPercentage
 } from "./portfolio_data";
 import AddPortfolioModal from "./AddPortfolioModal";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Portfolio = ({ userId }) => {
   const [portfolios, setPortfolios] = useState([]);
@@ -37,11 +39,18 @@ const Portfolio = ({ userId }) => {
         }
         
         const data = await response.json();
-        setPortfolios(data);
+        
+        // Ensure each portfolio has a positions array
+        const portfoliosWithPositions = data.map(portfolio => ({
+          ...portfolio,
+          positions: portfolio.positions || []
+        }));
+        
+        setPortfolios(portfoliosWithPositions);
         
         // Set default selected portfolio if we have portfolios
-        if (data.length > 0) {
-          setSelectedPortfolio(data[0]);
+        if (portfoliosWithPositions.length > 0) {
+          setSelectedPortfolio(portfoliosWithPositions[0]);
         }
         
         setError(null);
@@ -59,14 +68,16 @@ const Portfolio = ({ userId }) => {
   // Function to handle adding a new portfolio
   const handleAddPortfolio = async (portfolioData) => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/portfolios', {
+      console.log("Submitting portfolio:", portfolioData); // Debug
+      
+      const response = await fetch('http://127.0.0.1:5000/api/portfolios/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           user_id: userId,
-          portfolio_name: portfolioData.name,
+          name: portfolioData.name,
           strategy: portfolioData.strategy
         }),
       });
@@ -78,18 +89,26 @@ const Portfolio = ({ userId }) => {
 
       const newPortfolio = await response.json();
       
+      // Ensure the new portfolio has a positions array
+      const portfolioWithPositions = {
+        ...newPortfolio,
+        positions: []
+      };
+      
       // Update portfolios state with the new portfolio
-      const updatedPortfolios = [...portfolios, newPortfolio];
-      setPortfolios(updatedPortfolios);
+      setPortfolios([...portfolios, portfolioWithPositions]);
       
       // Select the newly created portfolio
-      setSelectedPortfolio(newPortfolio);
+      setSelectedPortfolio(portfolioWithPositions);
       
       // Close modal
       setIsModalOpen(false);
+      
+      // Show success toast
+      toast.success("Portfolio created successfully!");
     } catch (error) {
       console.error("Error creating portfolio:", error);
-      // You could add a toast notification here for error feedback
+      toast.error(`Failed to create portfolio: ${error.message}`);
     }
   };
 
@@ -127,6 +146,7 @@ const Portfolio = ({ userId }) => {
   if (portfolios.length === 0) {
     return (
       <div className="dashboard-container">
+        <ToastContainer />
         <div className="main-content" style={{ textAlign: 'center', padding: '50px' }}>
           <h2>No portfolios found</h2>
           <p>Create a new portfolio to get started</p>
@@ -155,17 +175,21 @@ const Portfolio = ({ userId }) => {
 
   return (
     <div className="dashboard-container">
+      <ToastContainer />
       {/* Sidebar */}
       <div className="sidebar">
         <h3>SELECT PORTFOLIO</h3>
         <div className="portfolio-list">
           {portfolios.map((portfolio) => (
             <button
-              key={portfolio.portfolio_id}
-              className={`portfolio-item ${selectedPortfolio?.portfolio_id === portfolio.portfolio_id ? "active" : ""}`}
+              key={portfolio.portfolio_id || portfolio.id}
+              className={`portfolio-item ${
+                (selectedPortfolio?.portfolio_id || selectedPortfolio?.id) === 
+                (portfolio.portfolio_id || portfolio.id) ? "active" : ""
+              }`}
               onClick={() => setSelectedPortfolio(portfolio)}
             >
-              {portfolio.portfolio_name}
+              {portfolio.portfolio_name || portfolio.name}
             </button>
           ))}
         </div>
@@ -188,7 +212,7 @@ const Portfolio = ({ userId }) => {
         <div className="main-content">
           <div className="portfolio-header">
             <div className="portfolio-title-section">
-              <h1>{selectedPortfolio.portfolio_name}</h1>
+              <h1>{selectedPortfolio.portfolio_name || selectedPortfolio.name}</h1>
               <div className="portfolio-metrics">
                 <div className="portfolio-total">
                   <span className="total-label">Current Value:</span>
