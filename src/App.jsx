@@ -67,7 +67,7 @@ function App() {
         />
         <Route
           path="/settings"
-          element={user.isLoggedIn ? <Settings /> : <Navigate to="/login" />}
+          element={user.isLoggedIn ? <Settings user={user} setUser={setUser} /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>
