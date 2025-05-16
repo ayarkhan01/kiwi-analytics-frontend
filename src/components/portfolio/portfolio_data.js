@@ -1,5 +1,4 @@
 // portfolio_data.js
-// Sample data matching the backend structure
 export const portfolioData = [
   {
     "portfolio_id": 1,
