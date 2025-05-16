@@ -61,7 +61,7 @@ const Settings = ({ user, setUser }) => {
   };
 
   const handleDeleteUser = async () => {
-    const confirmed = window.confirm('Are you sure you want to delete the user and log out?');
+    const confirmed = window.confirm('Are you sure you want to delete the user, its associated portfolios and positions and log out?');
     if (!confirmed) return;
 
     try {
