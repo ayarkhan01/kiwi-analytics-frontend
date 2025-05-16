@@ -51,12 +51,12 @@ function App() {
         />
         <Route
           path="/portfolio"
-          element={user.isLoggedIn ? <Portfolio /> : <Navigate to="/login" />}
+          element={user.isLoggedIn ? <Portfolio userId={user.userID} /> : <Navigate to="/login" />}
         />
         <Route
-          path="/market"
-          element={user.isLoggedIn ? <Market /> : <Navigate to="/login" />}
-        />
+  path="/market"
+  element={user.isLoggedIn ? <Market userId={user.userID} /> : <Navigate to="/login" />}
+/>
         <Route
           path="/transactions"
           element={user.isLoggedIn ? <Transactions /> : <Navigate to="/login" />}

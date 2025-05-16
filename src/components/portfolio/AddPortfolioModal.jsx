@@ -5,19 +5,27 @@ import "./portfolio.css";
 const AddPortfolioModal = ({ isOpen, onClose, onAddPortfolio }) => {
   const [portfolioName, setPortfolioName] = useState("");
   const [strategy, setStrategy] = useState("long_term");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
+    // Validate form
+    if (!portfolioName.trim()) {
+      setError("Portfolio name cannot be empty");
+      return;
+    }
+    
     // Call the onAddPortfolio function with form data
     onAddPortfolio({
-      name: portfolioName,
+      name: portfolioName.trim(),
       strategy: strategy
     });
     
     // Reset form
     setPortfolioName("");
     setStrategy("long_term");
+    setError("");
     
     // Close modal
     onClose();
@@ -39,10 +47,14 @@ const AddPortfolioModal = ({ isOpen, onClose, onAddPortfolio }) => {
               type="text"
               id="portfolioName"
               value={portfolioName}
-              onChange={(e) => setPortfolioName(e.target.value)}
+              onChange={(e) => {
+                setPortfolioName(e.target.value);
+                setError("");
+              }}
               required
               placeholder="e.g. Growth Investments"
             />
+            {error && <div className="error-message" style={{color: 'red', fontSize: '0.8rem', marginTop: '5px'}}>{error}</div>}
           </div>
           
           <div className="form-group">
