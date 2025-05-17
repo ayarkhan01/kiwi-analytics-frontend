@@ -205,3 +205,39 @@
 .Toastify__toast-body {
   padding: 0 0.625rem !important;
 }
+
+.signup-button {
+  font-size: 1rem;
+  color: #f0f5fa;
+  line-height: 1.2;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 3.125rem;
+  background: linear-gradient(120deg, #00695c, #26a69a);
+  background-size: 200% 200%;
+  border-radius: 1.5625rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  margin: 0 auto 1.875rem auto; /* space below signup, reuse margin style */
+}
+
+.signup-button:hover {
+  box-shadow: 0 0.625rem 1.875rem rgba(187, 243, 206, 0.3);
+  animation: gradientShiftSignup 0.2s ease-in-out forwards;
+  height: 3.75rem;
+  width: 90%;
+}
+
+@keyframes gradientShiftSignup {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+

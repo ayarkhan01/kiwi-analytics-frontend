@@ -1,47 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Author } from "./Author";
-import max from "../../assets/max.jpg";
-import ahmed from "../../assets/ahmed.jpeg";
-import Jose from "../../assets/Jose.jpg";
-import Jean from "../../assets/Jean.jpg";
-import Khuong from "../../assets/khuong.jpg";
 import "./about.css";
 
-// Team members data
-const teamMembers = [
-  {
-    name: "Max",
-    image: max,
-    position: "Junior Developer",
-    description: "Frontend Developer with skills in css, python, javascript",
-  },
-  {
-    name: "Ahmed",
-    image: ahmed,
-    position: "CEO",
-    description: "FinTech and Machine Learning Specialist",
-  },
-  {
-    name: "Jose",
-    image: Jose,
-    position: "Finance Analyst",
-    description: "Financial especialist with experience in data analysis",
-  },
-  {
-    name: "Jean",
-    image: Jean,
-    position: "Intern",
-    description: "Hard working MS FinTech student with a passion for coding",
-  },
-  {
-    name: "Khuong",
-    image: Khuong,
-    position: "Data Accounting Analyst",
-    description: "Accounting and report analysis",
-  },
-];
-
 const About = ({ setUserInParentComponent }) => {
+  const [teamMembers, setTeamMembers] = useState([]);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/team");
+        const data = await response.json();
+        setTeamMembers(data);
+      } catch (error) {
+        console.error("Failed to fetch team members:", error);
+      }
+    };
+
+    fetchTeam();
+  }, []);
 
   return (
     <div className="about-container">
@@ -52,7 +28,7 @@ const About = ({ setUserInParentComponent }) => {
           <Author
             key={index}
             name={member.name}
-            image={member.image}
+            image={member.image} // This should ideally be a URL if coming from the backend
             description={member.description}
             position={member.position}
           />
@@ -63,14 +39,7 @@ const About = ({ setUserInParentComponent }) => {
         <h2>Our Mission</h2>
         <p>
           At Kiwi Analytics, we are dedicated to bringing sophisticated
-          financial analysis tools to everyday investors. Our platform combines
-          cutting-edge technology with intuitive design to help you make
-          informed investment decisions.
-        </p>
-        <p>
-          Founded in 2023, our team of financial experts and technology
-          specialists work together to democratize access to powerful financial
-          analytics that were once only available to institutional investors.
+          financial analysis tools to everyday investors...
         </p>
       </div>
     </div>
@@ -78,3 +47,4 @@ const About = ({ setUserInParentComponent }) => {
 };
 
 export default About;
+
