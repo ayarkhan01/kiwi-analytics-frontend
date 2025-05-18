@@ -52,7 +52,7 @@
     border-radius: 4px;
     font-size: 0.9rem;
     transition: background-color 0.3s;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .delete-button:hover {
@@ -82,4 +82,36 @@
 .no-portfolios-text {
     font-style: italic;
     color: gray;
+}
+
+.spinner {
+  margin: 1rem 0;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.portfolio-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button:hover {
+    background-color: #c62828;
+    transform: translateY(-1px);
+}
+
+.no-portfolios-text {
+    font-style: italic;
+    color: #777;
+    margin-top: 1rem;
 }
