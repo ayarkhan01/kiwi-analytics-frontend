@@ -50,6 +50,51 @@ const Login = ({ setUserInParentComponent }) => {
     }
   };
 
+  const handleSignup = async () => {
+    const newUsername = prompt("Enter new username:");
+    if (!newUsername) return;
+
+    const newPassword = prompt("Enter new password:");
+    if (!newPassword) return;
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: newUsername, password: newPassword }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUserInParentComponent({
+          user: newUsername,
+          isLoggedIn: true,
+          userID: data.user_id,
+        });
+        toast.success("Account created & logged in!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      } else {
+        toast.error(data.error || "Signup failed", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+        });
+      }
+    } catch (error) {
+      toast.error("Server error during signup.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+      });
+    }
+  };
+
   return (
     <div className="loginform">
       <div className="main">
@@ -91,6 +136,16 @@ const Login = ({ setUserInParentComponent }) => {
               LOGIN
             </button>
           </div>
+
+          <div className="wrap">
+            <button
+              type="button"
+              className="signup-button"
+              onClick={handleSignup}
+            >
+              NEW USER
+            </button>
+          </div>
         </form>
       </div>
 
@@ -100,3 +155,4 @@ const Login = ({ setUserInParentComponent }) => {
 };
 
 export default Login;
+
