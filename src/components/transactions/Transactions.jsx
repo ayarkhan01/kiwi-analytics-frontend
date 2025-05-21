@@ -10,11 +10,31 @@ const Transactions = () => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [sortDirection, setSortDirection] = useState('desc'); // 'desc' = newest first, 'asc' = oldest first
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+  const [liveTransactions, setLiveTransactions] = useState([]);
+  
   
   // Get unique portfolios, tickers, and transaction types
   const uniquePortfolios = [...new Set(transactionsData.map(t => t.portfolio))];
   const uniqueTickers = [...new Set(transactionsData.map(t => t.ticker))];
   const transactionTypes = ["Buy", "Sell"];
+  const combinedTransactions = [...transactionsData, ...liveTransactions];
+
+
+  // NEW: Fetch live transactions on mount
+  useEffect(() => {
+    const fetchLiveTransactions = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/transactions"); // Change URL if needed
+        const data = await response.json();
+        setLiveTransactions(data);
+      } catch (error) {
+        console.error("Error fetching live transactions:", error);
+      }
+    };
+
+    fetchLiveTransactions();
+  }, []);
+
   
   // Apply filters and sorting
   useEffect(() => {
