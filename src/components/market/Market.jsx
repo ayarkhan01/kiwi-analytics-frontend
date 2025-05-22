@@ -5,7 +5,8 @@ import "./Market.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Market = ({ userId }) => {
+const Market = ({ userId, balance }) => {
+
   // State management
   const [marketStocks, setMarketStocks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -257,9 +258,18 @@ const Market = ({ userId }) => {
       <ToastContainer />
       
       <div className="market-header">
-        <h1>Market</h1>
-        <p className="market-subheader">Browse and add stocks to your portfolios</p>
-      </div>
+  <div className="market-title-group">
+    <div>
+      <h1>Market</h1>
+      <p className="market-subheader">Browse and add stocks to your portfolios</p>
+    </div>
+    <div className="market-balance">
+      <span className="balance-label">Account Balance:</span>
+      <span className="balance-value">${balance?.toFixed(2)}</span>
+    </div>
+  </div>
+</div>
+
       
       <div className="market-controls">
         <div className="search-container">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,11 +19,43 @@ function App() {
     user: "",
     userID: "",
     isLoggedIn: false,
+    balance: null,
   });
 
   const handleLogout = () => {
-    setUser({ user: "", userID:"",isLoggedIn: false });
+    setUser({ user: "", userID: "", isLoggedIn: false, balance: null });
   };
+
+  // 🔄 Fetch balance whenever user logs in
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (user.isLoggedIn && user.userID) {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/api/user/balance", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_id: user.userID }),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            setUser((prevUser) => ({
+              ...prevUser,
+              balance: data.balance,
+            }));
+          } else {
+            console.error("Balance fetch error:", data.error);
+          }
+        } catch (error) {
+          console.error("Balance fetch failed:", error);
+        }
+      }
+    };
+
+    fetchBalance();
+  }, [user.isLoggedIn, user.userID]);
 
   return (
     <Router>
@@ -32,11 +64,7 @@ function App() {
         <Route
           path="/"
           element={
-            user.isLoggedIn ? (
-              <Navigate to="/portfolio" />
-            ) : (
-              <Navigate to="/login" />
-            )
+            user.isLoggedIn ? <Navigate to="/portfolio" /> : <Navigate to="/login" />
           }
         />
         <Route
@@ -51,12 +79,24 @@ function App() {
         />
         <Route
           path="/portfolio"
-          element={user.isLoggedIn ? <Portfolio userId={user.userID} /> : <Navigate to="/login" />}
+          element={
+            user.isLoggedIn ? (
+              <Portfolio userId={user.userID} balance={user.balance} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
-  path="/market"
-  element={user.isLoggedIn ? <Market userId={user.userID} /> : <Navigate to="/login" />}
-/>
+          path="/market"
+          element={
+            user.isLoggedIn ? (
+              <Market userId={user.userID} balance={user.balance} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
         <Route
           path="/transactions"
           element={user.isLoggedIn ? <Transactions userId={user.userID}/> : <Navigate to="/login" />}
@@ -67,7 +107,13 @@ function App() {
         />
         <Route
           path="/settings"
-          element={user.isLoggedIn ? <Settings user={user} setUser={setUser} /> : <Navigate to="/login" />}
+          element={
+            user.isLoggedIn ? (
+              <Settings user={user} setUser={setUser} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
     </Router>

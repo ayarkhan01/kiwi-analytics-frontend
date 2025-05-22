@@ -12,7 +12,8 @@ import AddPortfolioModal from "./AddPortfolioModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Portfolio = ({ userId }) => {
+const Portfolio = ({ userId, balance }) => {
+
   const [portfolios, setPortfolios] = useState([]);
   const [selectedPortfolio, setSelectedPortfolio] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -211,25 +212,36 @@ const Portfolio = ({ userId }) => {
       {selectedPortfolio && (
         <div className="main-content">
           <div className="portfolio-header">
-            <div className="portfolio-title-section">
-              <h1>{selectedPortfolio.portfolio_name || selectedPortfolio.name}</h1>
-              <div className="portfolio-metrics">
-                <div className="portfolio-total">
-                  <span className="total-label">Current Value:</span>
-                  <span className="total-amount">{formatCurrency(calculatePortfolioTotal(selectedPortfolio))}</span>
-                </div>
-                <div className="portfolio-profit-loss">
-                  <span className="profit-loss-label">Total P/L:</span>
-                  <span className={`profit-loss-amount ${calculatePortfolioProfitLoss(selectedPortfolio) >= 0 ? 'positive' : 'negative'}`}>
-                    {formatCurrency(calculatePortfolioProfitLoss(selectedPortfolio))} ({formatPercentage(calculatePortfolioProfitLossPercentage(selectedPortfolio))})
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="view-selector">
-              {formatStrategy(selectedPortfolio.strategy)}
-            </div>
-          </div>
+  <div className="portfolio-title-group">
+    <div className="portfolio-title-section">
+      <h1>{selectedPortfolio.portfolio_name || selectedPortfolio.name}</h1>
+      <div className="portfolio-metrics">
+        <div className="portfolio-total">
+          <span className="total-label">Current Value:</span>
+          <span className="total-amount">{formatCurrency(calculatePortfolioTotal(selectedPortfolio))}</span>
+        </div>
+        <div className="portfolio-profit-loss">
+          <span className="profit-loss-label">Total P/L:</span>
+          <span className={`profit-loss-amount ${calculatePortfolioProfitLoss(selectedPortfolio) >= 0 ? 'positive' : 'negative'}`}>
+            {formatCurrency(calculatePortfolioProfitLoss(selectedPortfolio))} ({formatPercentage(calculatePortfolioProfitLossPercentage(selectedPortfolio))})
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* Account Balance */}
+    <div className="portfolio-balance">
+      <span className="balance-label">Account Balance:</span>
+      <span className="balance-value">${balance?.toFixed(2)}</span>
+    </div>
+  </div>
+
+  <div className="view-selector">
+    {formatStrategy(selectedPortfolio.strategy)}
+  </div>
+</div>
+
+    
           
           <div className="divider"></div>
           
