@@ -26,7 +26,7 @@ const Market = ({ userId }) => {
     const fetchPortfolios = async () => {
       if (!userId) return;
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/portfolios/user', {
+        const response = await fetch('http://127.0.0.1:5001/api/portfolios/user', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id: userId }),
