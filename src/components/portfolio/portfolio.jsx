@@ -27,7 +27,7 @@ const Portfolio = ({ userId, balance }) => {
       
       try {
         setIsLoading(true);
-        const response = await fetch(`http://127.0.0.1:5000/api/portfolios/user`, {
+        const response = await fetch(`http://127.0.0.1:5001/api/portfolios/user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const Portfolio = ({ userId, balance }) => {
     try {
       console.log("Submitting portfolio:", portfolioData); // Debug
       
-      const response = await fetch('http://127.0.0.1:5000/api/portfolios/add', {
+      const response = await fetch('http://127.0.0.1:5001/api/portfolios/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

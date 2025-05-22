@@ -8,7 +8,7 @@ const About = ({ setUserInParentComponent }) => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/team");
+        const response = await fetch("http://localhost:5001/api/team");
         const data = await response.json();
         setTeamMembers(data);
       } catch (error) {

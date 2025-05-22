@@ -13,7 +13,7 @@ const Settings = ({ user, setUser }) => {
     const fetchPortfolios = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/portfolios/user', {
+        const response = await fetch('http://127.0.0.1:5001/api/portfolios/user', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id: user.userID }),
@@ -42,7 +42,7 @@ const Settings = ({ user, setUser }) => {
     if (!confirmed) return;
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/portfolios/delete', {
+      const response = await fetch('http://127.0.0.1:5001/api/portfolios/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ portfolio_id: portfolioId }),
@@ -65,7 +65,7 @@ const Settings = ({ user, setUser }) => {
     if (!confirmed) return;
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/delete_user', {
+      const response = await fetch('http://127.0.0.1:5001/api/delete_user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.userID }),

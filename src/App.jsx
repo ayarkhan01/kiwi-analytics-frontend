@@ -99,7 +99,7 @@ function App() {
         />
         <Route
           path="/transactions"
-          element={user.isLoggedIn ? <Transactions /> : <Navigate to="/login" />}
+          element={user.isLoggedIn ? <Transactions userId={user.userID}/> : <Navigate to="/login" />}
         />
         <Route
           path="/about"

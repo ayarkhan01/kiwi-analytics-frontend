@@ -11,7 +11,7 @@ const Login = ({ setUserInParentComponent }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/login", {
+      const response = await fetch("http://127.0.0.1:5001/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,14 +37,14 @@ const Login = ({ setUserInParentComponent }) => {
         // Login failed
         toast.error(data.error || "Login failed", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 5001,
           hideProgressBar: true,
         });
       }
     } catch (error) {
       toast.error("Server error. Please try again.", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 5001,
         hideProgressBar: true,
       });
     }
@@ -58,7 +58,7 @@ const Login = ({ setUserInParentComponent }) => {
     if (!newPassword) return;
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/register", {
+      const response = await fetch("http://127.0.0.1:5001/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,14 +82,14 @@ const Login = ({ setUserInParentComponent }) => {
       } else {
         toast.error(data.error || "Signup failed", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 5001,
           hideProgressBar: true,
         });
       }
     } catch (error) {
       toast.error("Server error during signup.", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 5001,
         hideProgressBar: true,
       });
     }

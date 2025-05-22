@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import "./Market.css";
-import { portfolioData } from "../portfolio/portfolio_data";
+// Remove this import, we will fetch real portfolios
+// import { portfolioData } from "../portfolio/portfolio_data";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,16 +17,42 @@ const Market = ({ userId, balance }) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedStock, setSelectedStock] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedPortfolio, setSelectedPortfolio] = useState(
-    portfolioData.length > 0 ? portfolioData[0].portfolio_id : null
-  );
-  
+
+  // User portfolios state
+  const [userPortfolios, setUserPortfolios] = useState([]);
+  const [selectedPortfolio, setSelectedPortfolio] = useState(null);
+
+  // Fetch user portfolios from API
+  useEffect(() => {
+    const fetchPortfolios = async () => {
+      if (!userId) return;
+      try {
+        // Use port 5001 to match Portfolio.jsx
+        const response = await fetch('http://127.0.0.1:5001/api/portfolios/user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId }),
+        });
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
+        const data = await response.json();
+        setUserPortfolios(data);
+        if (data.length > 0) {
+          setSelectedPortfolio(String(data[0].portfolio_id));
+        }
+      } catch (err) {
+        setUserPortfolios([]);
+        setSelectedPortfolio("");
+      }
+    };
+    fetchPortfolios();
+  }, [userId]);
+
   // Fetch market data from backend API
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://127.0.0.1:5000/api/market');
+        const response = await fetch('http://127.0.0.1:5001/api/market');
         
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
@@ -114,7 +141,7 @@ const Market = ({ userId, balance }) => {
     
     try {
       // Call the backend API to buy the stock
-      const response = await fetch('http://127.0.0.1:5000/api/portfolios/buy', {
+      const response = await fetch('http://127.0.0.1:5001/api/portfolios/buy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -150,7 +177,7 @@ const Market = ({ userId, balance }) => {
       console.error('Error adding stock:', error);
       toast.error(`Failed to add stock: ${error.message}`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 5001,
       });
     }
   }, [quantity, selectedStock, selectedPortfolio]);
@@ -185,6 +212,13 @@ const Market = ({ userId, balance }) => {
   const closeModal = useCallback(() => {
     setIsAddModalOpen(false);
   }, []);
+  
+  // Update selectedPortfolio when userPortfolios change (e.g. after fetch)
+  useEffect(() => {
+    if (userPortfolios.length > 0 && !selectedPortfolio) {
+      setSelectedPortfolio(userPortfolios[0].portfolio_id);
+    }
+  }, [userPortfolios, selectedPortfolio]);
   
   // Render loading state
   if (isLoading) {
@@ -333,15 +367,19 @@ const Market = ({ userId, balance }) => {
                 <label htmlFor="portfolio-select">Select Portfolio:</label>
                 <select 
                   id="portfolio-select"
-                  value={selectedPortfolio}
-                  onChange={handlePortfolioChange}
+                  value={selectedPortfolio || ""}
+                  onChange={e => setSelectedPortfolio(e.target.value)}
                   className="portfolio-select"
                 >
-                  {portfolioData.map(portfolio => (
-                    <option key={portfolio.portfolio_id} value={portfolio.portfolio_id}>
-                      {portfolio.portfolio_name}
-                    </option>
-                  ))}
+                  {userPortfolios.length === 0 ? (
+                    <option disabled value="">No portfolios found</option>
+                  ) : (
+                    userPortfolios.map(portfolio => (
+                      <option key={portfolio.portfolio_id} value={String(portfolio.portfolio_id)}>
+                        {portfolio.portfolio_name}
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
               
