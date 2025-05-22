@@ -26,7 +26,8 @@ const Market = ({ userId }) => {
     const fetchPortfolios = async () => {
       if (!userId) return;
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/portfolios/user', {
+        // Use port 5001 to match Portfolio.jsx
+        const response = await fetch('http://127.0.0.1:5001/api/portfolios/user', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id: userId }),
@@ -34,12 +35,12 @@ const Market = ({ userId }) => {
         if (!response.ok) throw new Error(`API error: ${response.status}`);
         const data = await response.json();
         setUserPortfolios(data);
-        // Set default selected portfolio if not set
-        if (data.length > 0 && !selectedPortfolio) {
-          setSelectedPortfolio(data[0].portfolio_id);
+        if (data.length > 0) {
+          setSelectedPortfolio(String(data[0].portfolio_id));
         }
       } catch (err) {
         setUserPortfolios([]);
+        setSelectedPortfolio("");
       }
     };
     fetchPortfolios();
@@ -357,14 +358,14 @@ const Market = ({ userId }) => {
                 <select 
                   id="portfolio-select"
                   value={selectedPortfolio || ""}
-                  onChange={handlePortfolioChange}
+                  onChange={e => setSelectedPortfolio(e.target.value)}
                   className="portfolio-select"
                 >
                   {userPortfolios.length === 0 ? (
                     <option disabled value="">No portfolios found</option>
                   ) : (
                     userPortfolios.map(portfolio => (
-                      <option key={portfolio.portfolio_id} value={portfolio.portfolio_id}>
+                      <option key={portfolio.portfolio_id} value={String(portfolio.portfolio_id)}>
                         {portfolio.portfolio_name}
                       </option>
                     ))
