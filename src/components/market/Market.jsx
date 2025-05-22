@@ -24,7 +24,7 @@ const Market = () => {
     const fetchMarketData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://127.0.0.1:5000/api/market');
+        const response = await fetch('http://127.0.0.1:5001/api/market');
         
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
@@ -113,7 +113,7 @@ const Market = () => {
     
     try {
       // Call the backend API to buy the stock
-      const response = await fetch('http://127.0.0.1:5000/api/portfolios/buy', {
+      const response = await fetch('http://127.0.0.1:5001/api/portfolios/buy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ const Market = () => {
       console.error('Error adding stock:', error);
       toast.error(`Failed to add stock: ${error.message}`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 5001,
       });
     }
   }, [quantity, selectedStock, selectedPortfolio]);
