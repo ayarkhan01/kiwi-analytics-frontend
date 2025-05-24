@@ -31,7 +31,7 @@ function App() {
     const fetchBalance = async () => {
       if (user.isLoggedIn && user.userID) {
         try {
-          const response = await fetch("http://127.0.0.1:5000/api/user/balance", {
+          const response = await fetch("http://127.0.0.1:5001/api/user/balance", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -79,23 +79,11 @@ function App() {
         />
         <Route
           path="/portfolio"
-          element={
-            user.isLoggedIn ? (
-              <Portfolio userId={user.userID} balance={user.balance} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={user.isLoggedIn ? <Portfolio userId={user.userID} balance={user.balance} setUser={setUser} /> : <Navigate to="/login" />}
         />
         <Route
           path="/market"
-          element={
-            user.isLoggedIn ? (
-              <Market userId={user.userID} balance={user.balance} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={user.isLoggedIn ? <Market userId={user.userID} balance={user.balance} setUser={setUser} /> : <Navigate to="/login" />}
         />
         <Route
           path="/transactions"
