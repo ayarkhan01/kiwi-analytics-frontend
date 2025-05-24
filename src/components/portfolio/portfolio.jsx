@@ -12,13 +12,16 @@ import AddPortfolioModal from "./AddPortfolioModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Portfolio = ({ userId, balance }) => {
+const Portfolio = ({ userId, balance, setUser }) => {
 
   const [portfolios, setPortfolios] = useState([]);
   const [selectedPortfolio, setSelectedPortfolio] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState(null);
+  const [sellQuantity, setSellQuantity] = useState(1);
 
   // Fetch portfolios from API
   useEffect(() => {
@@ -111,6 +114,100 @@ const Portfolio = ({ userId, balance }) => {
       console.error("Error creating portfolio:", error);
       toast.error(`Failed to create portfolio: ${error.message}`);
     }
+  };
+
+  // Function to handle selling a position
+  const handleSellPosition = async () => {
+    if (!selectedPosition || !sellQuantity) {
+      toast.error('Please select a quantity to sell');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:5001/api/portfolios/sell', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          portfolio_id: selectedPortfolio.portfolio_id,
+          ticker: selectedPosition.ticker,
+          quantity: sellQuantity,
+          price: selectedPosition.market_value / selectedPosition.quantity // Calculate current price per share
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to sell position');
+      }
+
+      // After successful sale, fetch updated balance
+      const balanceResponse = await fetch('http://127.0.0.1:5001/api/user/balance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId }),
+      });
+
+      if (balanceResponse.ok) {
+        const balanceData = await balanceResponse.json();
+        // Update the balance in the parent component
+        setUser(prevUser => ({
+          ...prevUser,
+          balance: balanceData.balance
+        }));
+      }
+
+      // Refresh portfolios to update positions
+      const portfoliosResponse = await fetch('http://127.0.0.1:5001/api/portfolios/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId }),
+      });
+
+      if (portfoliosResponse.ok) {
+        const updatedPortfolios = await portfoliosResponse.json();
+        setPortfolios(updatedPortfolios);
+        // Update selected portfolio with new data
+        const updatedSelectedPortfolio = updatedPortfolios.find(
+          p => p.portfolio_id === selectedPortfolio.portfolio_id
+        );
+        if (updatedSelectedPortfolio) {
+          setSelectedPortfolio(updatedSelectedPortfolio);
+        }
+      }
+
+      toast.success('Position sold successfully!');
+      setIsSellModalOpen(false);
+      setSellQuantity(1);
+    } catch (error) {
+      console.error('Error selling position:', error);
+      toast.error(error.message || 'Failed to sell position');
+    }
+  };
+
+  // Quantity handlers
+  const decreaseQuantity = () => {
+    setSellQuantity(prev => Math.max(1, prev - 1));
+  };
+
+  const increaseQuantity = () => {
+    setSellQuantity(prev => Math.min(selectedPosition.quantity, prev + 1));
+  };
+
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value) || 1;
+    setSellQuantity(Math.min(selectedPosition.quantity, Math.max(1, value)));
+  };
+
+  const openSellModal = (position) => {
+    setSelectedPosition(position);
+    setSellQuantity(1);
+    setIsSellModalOpen(true);
   };
 
   // Render loading state
@@ -249,20 +346,19 @@ const Portfolio = ({ userId, balance }) => {
           <div className="positions-container">
             {selectedPortfolio.positions && selectedPortfolio.positions.length > 0 ? (
               selectedPortfolio.positions.map((position) => (
-                <div key={position.id} className="position-card">
+                <div key={position.ticker} className="position-card">
                   <div className="position-header">
-                    <div className="position-ticker">
-                      <span className="ticker">{position.ticker}</span>
-                      <span className={`daily-change ${position.percent_change < 0 ? "negative" : "positive"}`}>
-                        {formatPercentage(position.percent_change)}
-                      </span>
+                    <div className="position-title">
+                      <h3>{position.ticker}</h3>
+                      <span className="position-name">{position.name}</span>
                     </div>
-                    <div className="position-price">
-                      {formatCurrency(position.current_price)}
-                    </div>
+                    <button 
+                      className="sell-button"
+                      onClick={() => openSellModal(position)}
+                    >
+                      Sell
+                    </button>
                   </div>
-                  
-                  <div className="company-name">{position.name}</div>
                   
                   <div className="position-value-section">
                     <div className="total-value">
@@ -308,6 +404,76 @@ const Portfolio = ({ userId, balance }) => {
         onClose={() => setIsModalOpen(false)} 
         onAddPortfolio={handleAddPortfolio} 
       />
+
+      {/* Sell Stock Modal */}
+      {isSellModalOpen && selectedPosition && (
+        <div className="modal-backdrop">
+          <div className="add-stock-modal">
+            <h2>Sell {selectedPosition.ticker}</h2>
+            <p className="stock-info">{selectedPosition.name} - ${(selectedPosition.market_value / selectedPosition.quantity).toFixed(2)}</p>
+            
+            <div className="modal-form">
+              <div className="form-group">
+                <label htmlFor="quantity-input">Quantity to Sell:</label>
+                <div className="quantity-control">
+                  <button 
+                    className="quantity-btn"
+                    onClick={decreaseQuantity}
+                  >
+                    -
+                  </button>
+                  <input
+                    id="quantity-input"
+                    type="number"
+                    min="1"
+                    max={selectedPosition.quantity}
+                    value={sellQuantity}
+                    onChange={handleQuantityChange}
+                    className="quantity-input"
+                  />
+                  <button 
+                    className="quantity-btn"
+                    onClick={increaseQuantity}
+                  >
+                    +
+                  </button>
+                </div>
+                <p className="available-shares">Available shares: {selectedPosition.quantity}</p>
+              </div>
+              
+              <div className="transaction-summary">
+                <div className="summary-row">
+                  <span>Price per Share:</span>
+                  <span>${(selectedPosition.market_value / selectedPosition.quantity).toFixed(2)}</span>
+                </div>
+                <div className="summary-row">
+                  <span>Shares to Sell:</span>
+                  <span>{sellQuantity}</span>
+                </div>
+                <div className="summary-row total">
+                  <span>Total Value:</span>
+                  <span>${((selectedPosition.market_value / selectedPosition.quantity) * sellQuantity).toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="modal-actions">
+              <button 
+                className="cancel-btn"
+                onClick={() => setIsSellModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="confirm-btn"
+                onClick={handleSellPosition}
+              >
+                Sell Shares
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

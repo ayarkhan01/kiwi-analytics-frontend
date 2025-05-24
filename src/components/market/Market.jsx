@@ -5,7 +5,7 @@ import "./Market.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Market = ({ userId, balance }) => {
+const Market = ({ userId, balance, setUser }) => {
 
   // State management
   const [marketStocks, setMarketStocks] = useState([]);
@@ -136,17 +136,20 @@ const Market = ({ userId, balance }) => {
   }, []);
   
   // Handle adding stock to portfolio - memoized
-  const handleAddStock = useCallback(async () => {
-    if (!selectedStock) return;
-    
+  const handleAddStock = async () => {
+    if (!selectedStock || !selectedPortfolio || !quantity) {
+      toast.error('Please select a stock, portfolio, and quantity');
+      return;
+    }
+
     try {
-      // Call the backend API to buy the stock
       const response = await fetch('http://127.0.0.1:5001/api/portfolios/buy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          user_id: userId,
           portfolio_id: selectedPortfolio,
           ticker: selectedStock.ticker,
           quantity: quantity,
@@ -159,28 +162,32 @@ const Market = ({ userId, balance }) => {
         throw new Error(errorData.error || 'Failed to add stock to portfolio');
       }
 
-      const result = await response.json();
-      
-      // Close modal first to improve perceived performance
-      setIsAddModalOpen(false);
-      
-      // Show success message
-      toast.success(result.message || `Added ${quantity} shares of ${selectedStock.ticker} to your portfolio`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+      // After successful transaction, fetch updated balance
+      const balanceResponse = await fetch('http://127.0.0.1:5001/api/user/balance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId }),
       });
+
+      if (balanceResponse.ok) {
+        const balanceData = await balanceResponse.json();
+        // Update the balance in the parent component
+        setUser(prevUser => ({
+          ...prevUser,
+          balance: balanceData.balance
+        }));
+      }
+
+      toast.success('Stock added successfully!');
+      setIsAddModalOpen(false);
+      setQuantity(1);
     } catch (error) {
       console.error('Error adding stock:', error);
-      toast.error(`Failed to add stock: ${error.message}`, {
-        position: "top-right",
-        autoClose: 5001,
-      });
+      toast.error(error.message || 'Failed to add stock');
     }
-  }, [quantity, selectedStock, selectedPortfolio]);
+  };
 
   // Memoize the search input handler to debounce frequent updates
   const handleSearchChange = useCallback((e) => {
